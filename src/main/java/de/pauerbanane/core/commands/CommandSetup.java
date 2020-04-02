@@ -14,7 +14,6 @@ import de.pauerbanane.core.data.CorePlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 
-import java.awt.print.Paper;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,9 +34,14 @@ public class CommandSetup {
             HomeData homeData = CorePlayer.get(c.getPlayer().getUniqueId()).getData(HomeData.class);
             return ImmutableList.copyOf(homeData.getHomes().keySet());
         });
-        final Stream<String> stream = Arrays.stream(GameMode.values()).map(mode -> String.valueOf(mode.toString()));
+        final Stream<String> gameModeStream = Arrays.stream(GameMode.values()).map(mode -> mode.toString().toLowerCase());
+        final Stream<String> gameModeOrdinalStream = Arrays.stream(GameMode.values()).map(mode -> String.valueOf(mode.ordinal()));
+        final Stream<String> gameModeCompletion = Streams.concat(gameModeStream, gameModeOrdinalStream);
+
+        final ImmutableList<String> gameModeList = ImmutableList.<String>builder().addAll(gameModeCompletion.collect(Collectors.toList())).build();
+
         commandManager.getCommandCompletions().registerCompletion("gamemode", c -> {
-            return ImmutableList.<String>builder().addAll(stream.collect(Collectors.toList())).build();
+            return gameModeList;
         });
         commandManager.getCommandCompletions().registerCompletion("addon", c -> {
             ImmutableList.Builder<String> builder = ImmutableList.builder();
@@ -47,12 +51,18 @@ public class CommandSetup {
     }
 
     public void registerCommandContexts() {
-        commandManager.getCommandContexts().registerContext(GameMode.class, context -> {
-            final String tag = context.popFirstArg();
-            if(GameMode.valueOf(tag) != null) {
-                return GameMode.valueOf(tag);
-            } else if(UtilMath.isInt(tag)) {
-                switch(Integer.parseInt(tag)) {
+        commandManager.getCommandContexts().registerContext(GameMode.class, c -> {
+
+            final String tag = c.popFirstArg();
+            GameMode gameMode = null;
+            for(int i = 0; i < GameMode.values().length; i++)
+                if(GameMode.values()[i].toString().equals(tag.toUpperCase()))
+                    gameMode = GameMode.valueOf(tag.toUpperCase());
+            if (gameMode != null) {
+                return GameMode.valueOf(tag.toUpperCase());
+            } else if (UtilMath.isInt(tag)) {
+
+                switch (Integer.parseInt(tag)) {
                     case 0:
                         return GameMode.SURVIVAL;
                     case 1:
@@ -64,8 +74,10 @@ public class CommandSetup {
                     default:
                         throw new InvalidCommandArgument("Invalid GameMode specified.");
                 }
-            } else
+
+            } else {
                 throw new InvalidCommandArgument("Invalid GameMode specified.");
+            }
         });
 
         commandManager.getCommandContexts().registerContext(Addon.class, c -> {

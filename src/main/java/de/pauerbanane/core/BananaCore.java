@@ -6,8 +6,12 @@ import de.pauerbanane.api.data.PlayerDataManager;
 import de.pauerbanane.core.addons.AddonManager;
 import de.pauerbanane.core.addons.deathMessages.DeathMessages;
 import de.pauerbanane.core.addons.essentials.Essentials;
+import de.pauerbanane.core.addons.essentials.playerdata.HomeData;
+import de.pauerbanane.core.commands.AddonCommand;
 import de.pauerbanane.core.commands.CommandSetup;
 import de.pauerbanane.core.data.PermissionManager;
+import de.pauerbanane.core.data.PlayerDataLoader;
+import de.pauerbanane.core.listener.DisableJoinQuitMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -35,6 +39,8 @@ public class BananaCore extends JavaPlugin {
 
     private CommandSetup commandSetup;
 
+    private PlayerDataLoader playerDataLoader;
+
 
     @Override
     public void onEnable() {
@@ -49,12 +55,22 @@ public class BananaCore extends JavaPlugin {
         this.pluginManager = Bukkit.getPluginManager();
         this.addonManager = new AddonManager(this);
         this.commandSetup = new CommandSetup(this);
+        this.playerDataLoader = new PlayerDataLoader(this);
+
+        playerDataManager.registerPlayerData(this, HomeData.class);
 
         commandSetup.registerCommandCompletions();
         commandSetup.registerCommandContexts();
         commandSetup.registerCommandConditions();
 
+        playerDataLoader.loadOnlinePlayers();
+
         registerAddons();
+
+        registerCommand(new AddonCommand());
+
+        registerListener(new DisableJoinQuitMessage());
+
     }
 
     @Override
@@ -101,5 +117,9 @@ public class BananaCore extends JavaPlugin {
 
     public AddonManager getAddonManager() {
         return addonManager;
+    }
+
+    public PlayerDataManager getPlayerDataManager() {
+        return playerDataManager;
     }
 }

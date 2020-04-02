@@ -1,10 +1,6 @@
 package de.pauerbanane.core.addons.essentials.commands;
 
 import com.google.common.collect.Lists;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
-
 import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.annotation.CommandAlias;
 import de.pauerbanane.acf.annotation.CommandPermission;
@@ -18,6 +14,10 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 @CommandAlias("bonemeal")
 @CommandPermission("command.bonemeal")
@@ -85,6 +85,6 @@ public class BonemealCommand extends BaseCommand {
                 counter++;
             }
         }
-        sender.sendMessage(F.main("Admin", "Es wurden " + F.elem(String.valueOf(counter)) + " Blaktualisiert."));
+        sender.sendMessage(F.main("Admin", "Es wurden " + F.elem(String.valueOf(counter)) + " Blöcke aktualisiert."));
     }
 }

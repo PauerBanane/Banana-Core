@@ -12,14 +12,15 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 @CommandAlias("tpall")
 @CommandPermission("command.tphere")
-public class TeleportAllCommand extends BaseCommand {
+public class  TeleportAllCommand extends BaseCommand {
 
     @Default
     public void teleportAll(Player sender) {
         sender.sendMessage(F.main("Teleport", "Teleportiere alle Spieler zu dir..."));
         Bukkit.getOnlinePlayers().forEach(target -> {
-            target.teleport((Entity)sender, PlayerTeleportEvent.TeleportCause.COMMAND);
-            target.sendMessage(F.main("Teleport", "Du wurdest zu " + F.name(sender.getDisplayName()) + "teleportiert."));
+            if(target != sender)
+                target.teleport((Entity)sender, PlayerTeleportEvent.TeleportCause.COMMAND);
+                target.sendMessage(F.main("Teleport", "Du wurdest zu " + F.name(sender.getDisplayName()) + " teleportiert."));
         });
     }
 }

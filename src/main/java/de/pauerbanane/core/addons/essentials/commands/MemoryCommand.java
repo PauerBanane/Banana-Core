@@ -6,6 +6,7 @@ import de.pauerbanane.acf.annotation.CommandAlias;
 import de.pauerbanane.acf.annotation.CommandPermission;
 import de.pauerbanane.acf.annotation.Default;
 import de.pauerbanane.api.util.F;
+import de.pauerbanane.api.util.UtilTime;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -16,7 +17,7 @@ public class MemoryCommand extends BaseCommand {
 
     @Default
     public void showMemory(CommandIssuer sender) {
-        sender.sendMessage(F.main("§cMonitor", "Das Plugin lseit: + UtilTime.getElapsedTime(this.startuptime) + "));
+        sender.sendMessage(F.main("§cMonitor", "Das Plugin läuft seit: " + UtilTime.getElapsedTime(this.startuptime) + "§7."));
         sender.sendMessage(F.main("§cMonitor", "RAM verbrauch: " + F.name(String.valueOf(getUsedRam())) + "/" + F.name(String.valueOf(getMaxRam())) + " MB"));
         sender.sendMessage("§f[" + F.ProgressBar(getUsedRam(), getMaxRam(), 50, "|") + "§f]");
         sender.sendMessage("");

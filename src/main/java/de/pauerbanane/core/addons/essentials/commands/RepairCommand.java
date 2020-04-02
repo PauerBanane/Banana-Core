@@ -30,7 +30,7 @@ public class RepairCommand extends BaseCommand {
             sender.sendMessage(F.main("Repair", "Du hast das Item repariert."));
             return;
         }
-        sender.sendMessage(F.error("Dieses Item lsich nicht reparieren!"));
+        sender.sendMessage(F.error("Dieses Item lässt sich nicht reparieren!"));
     }
 
     @Subcommand("all")

@@ -73,7 +73,7 @@ public class PermissionManager {
         QueryOptions queryOptions = api.getContextManager().getQueryOptions(user).orElse(api.getContextManager().getStaticQueryOptions());
         CachedMetaData metaData = user.getCachedData().getMetaData(queryOptions);
 
-        return (metaData.getPrefix() == null) ? "" : ChatColor.translateAlternateColorCodes('&', metaData.getSuffix());
+        return (metaData.getSuffix() == null) ? "" : ChatColor.translateAlternateColorCodes('&', metaData.getSuffix());
     }
 
     public static String getPlayerSuffix(UUID uuid) {
@@ -81,7 +81,7 @@ public class PermissionManager {
         QueryOptions queryOptions = api.getContextManager().getQueryOptions(user).orElse(api.getContextManager().getStaticQueryOptions());
         CachedMetaData metaData = user.getCachedData().getMetaData(queryOptions);
 
-        return (metaData.getPrefix() == null) ? "" : ChatColor.translateAlternateColorCodes('&', metaData.getSuffix());
+        return (metaData.getSuffix() == null) ? "" : ChatColor.translateAlternateColorCodes('&', metaData.getSuffix());
     }
 
     public static boolean hasMetaValue(Player player, String key) {

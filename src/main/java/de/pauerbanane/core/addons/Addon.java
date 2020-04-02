@@ -31,27 +31,29 @@ public abstract class Addon {
     }
 
     public void disable() {
-        registeredCommands.iterator().forEachRemaining(command -> unregisterCommand(command));
-        registeredListeners.forEach(listener -> unregisterListener(listener));
+        registeredCommands.iterator().forEachRemaining(command -> plugin.unregisterCommand(command));
+        registeredCommands.clear();
+        registeredListeners.forEach(listener -> plugin.unregisterListener(listener));
+        registeredListeners.clear();
         onDisable();
         enabled = false;
     }
 
     public void registerCommand(BaseCommand command) {
-        registeredCommands.add(command);
         plugin.registerCommand(command);
+        registeredCommands.add(command);
     }
     public void unregisterCommand(BaseCommand command) {
-        registeredCommands.remove(command);
         plugin.unregisterCommand(command);
+        registeredCommands.remove(command);
     }
     public void registerListener(Listener listener) {
-        registeredListeners.add(listener);
         plugin.registerListener(listener);
+        registeredListeners.add(listener);
     }
     public void unregisterListener(Listener listener) {
-        registeredListeners.remove(listener);
         plugin.unregisterListener(listener);
+        registeredListeners.remove(listener);
     }
 
     public abstract void onEnable();
@@ -59,5 +61,9 @@ public abstract class Addon {
 
     public String getName() {
         return name;
+    }
+
+    public Boolean isEnabled() {
+        return enabled;
     }
 }

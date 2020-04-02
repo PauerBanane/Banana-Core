@@ -2,3 +2,4 @@ name: Banana-Core
 main: de.pauerbanane.core.BananaCore
 version: 1.0
 depend: [Banana-API, LuckPerms, Vault]
+api-version: 1.15

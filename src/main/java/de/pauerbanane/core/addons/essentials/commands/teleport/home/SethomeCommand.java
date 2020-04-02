@@ -21,6 +21,12 @@ public class SethomeCommand extends BaseCommand {
             player.sendMessage(F.error("Dieser Name enthält ungültige Zeichen!"));
             return;
         }
+        if(homes.hasHome(home)) {
+            homes.deleteHome(home);
+            homes.addHome(home, player.getLocation());
+            player.sendMessage(F.main("Home", "Du hast deinen Homepunkt neu zugewiesen."));
+            return;
+        }
         if (homes.getTotalHomes() >= homes.getMaxHomes()) {
             player.sendMessage(F.error("Du hast bereits die maximale anzahl an Homepunkten erreicht."));
             return;

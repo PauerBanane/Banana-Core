@@ -1,6 +1,5 @@
 package de.pauerbanane.core.addons;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import de.pauerbanane.core.BananaCore;
 import org.bukkit.Bukkit;
@@ -10,6 +9,8 @@ import java.util.ArrayList;
 
 public class AddonManager {
 
+    private static AddonManager instance;
+
     private BananaCore plugin;
 
     private ArrayList<Addon> addons;
@@ -17,6 +18,7 @@ public class AddonManager {
     private FileConfiguration config;
 
     public AddonManager(BananaCore plugin) {
+        this.instance = this;
         this.plugin = plugin;
         this.addons = Lists.newArrayList();
         this.config = plugin.getConfig();
@@ -81,5 +83,9 @@ public class AddonManager {
 
     public ArrayList<Addon> getAddons() {
         return addons;
+    }
+
+    public static AddonManager getInstance() {
+        return instance;
     }
 }

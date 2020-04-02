@@ -40,11 +40,13 @@ public class Essentials extends Addon {
         registerCommand(new NightvisionCommand());
         registerCommand(new NoPickupCommand());
         registerCommand(new OpenInventoryCommand());
+        registerCommand(new ReloadCommand());
         registerCommand(new RepairCommand());
         registerCommand(new SeenCommand(this));
         registerCommand(new SpeedCommand());
         registerCommand(new SpielzeitCommand());
         registerCommand(new TimeCommand());
+        registerCommand(new UuidCommand());
         registerCommand(new WeatherCommand());
         registerCommand(new WorkbenchCommand());
 
