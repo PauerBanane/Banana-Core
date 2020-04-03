@@ -4,6 +4,7 @@ import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.PaperCommandManager;
 import de.pauerbanane.api.data.PlayerDataManager;
 import de.pauerbanane.core.addons.AddonManager;
+import de.pauerbanane.core.addons.afk.AFK;
 import de.pauerbanane.core.addons.deathMessages.DeathMessages;
 import de.pauerbanane.core.addons.essentials.Essentials;
 import de.pauerbanane.core.addons.essentials.playerdata.HomeData;
@@ -78,6 +79,7 @@ public class BananaCore extends JavaPlugin {
     }
 
     private void registerAddons() {
+        addonManager.registerAddon(new AFK(), "AFK");
         addonManager.registerAddon(new DeathMessages(), "Todesnachrichten");
         addonManager.registerAddon(new Essentials(), "Essentials");
     }

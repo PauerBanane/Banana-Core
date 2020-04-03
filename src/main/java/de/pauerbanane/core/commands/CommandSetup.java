@@ -40,9 +40,7 @@ public class CommandSetup {
 
         final ImmutableList<String> gameModeList = ImmutableList.<String>builder().addAll(gameModeCompletion.collect(Collectors.toList())).build();
 
-        commandManager.getCommandCompletions().registerCompletion("gamemode", c -> {
-            return gameModeList;
-        });
+        commandManager.getCommandCompletions().registerCompletion("gamemode", c -> gameModeList);
         commandManager.getCommandCompletions().registerCompletion("addon", c -> {
             ImmutableList.Builder<String> builder = ImmutableList.builder();
             plugin.getAddonManager().getAddons().forEach(addon -> builder.add(addon.getName()));
