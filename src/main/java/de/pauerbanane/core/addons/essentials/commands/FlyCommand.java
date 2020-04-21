@@ -8,7 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 @CommandAlias("fly")
-@CommandPermission("commands.fly")
+@CommandPermission("command.fly")
 public class FlyCommand extends BaseCommand {
 
     @Default

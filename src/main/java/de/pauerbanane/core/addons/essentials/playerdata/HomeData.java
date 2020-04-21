@@ -6,7 +6,6 @@ import de.pauerbanane.api.util.UtilLoc;
 import de.pauerbanane.api.util.UtilMath;
 import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.data.PermissionManager;
-import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -62,10 +61,9 @@ public class HomeData extends PlayerData {
     }
 
     public int getMaxHomes() {
-        CachedMetaData metaData = PermissionManager.getMetaData(getOwner());
-        String toParse = metaData.getMetaValue("homelimit" ) == null ? "1" : metaData.getMetaValue("homelimit");
+        String metaValue = PermissionManager.getMetaValue(getOwner(), "homelimit", BananaCore.getInstance().getServerName(), null);
 
-        return UtilMath.isInt(toParse) ? Integer.valueOf(toParse).intValue() : 1;
+        return UtilMath.isInt(metaValue) ? Integer.valueOf(metaValue) : 1;
     }
 
     public boolean hasHome(String name) {

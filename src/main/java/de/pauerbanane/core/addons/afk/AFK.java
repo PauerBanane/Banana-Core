@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
-import org.bukkit.permissions.Permission;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -22,7 +21,6 @@ public class AFK extends Addon implements Runnable, Listener {
 
     private long afkAfter;
     private long kickAfter;
-    private Permission byPassPermission;
     private HashMap<UUID, Long> afkTime;
     private HashMap<Player, Footprint> lastMovePosition;
 
@@ -30,7 +28,7 @@ public class AFK extends Addon implements Runnable, Listener {
     public void onEnable() {
         this.afkTime = new HashMap<>();
         this.lastMovePosition = new HashMap<>();
-        this.afkAfter = TimeUnit.MINUTES.toMillis(5);
+        this.afkAfter  = TimeUnit.MINUTES.toMillis(5);
         this.kickAfter = TimeUnit.MINUTES.toMillis(10);
 
         registerCommand(new AFKCommand(this));
@@ -56,7 +54,7 @@ public class AFK extends Addon implements Runnable, Listener {
     }
 
     public void updateAFK(Player player) {
-        if(player.hasPermission("kccore.afk.bypass"))
+        if(player.hasPermission("afk.bypass"))
             return;
         Footprint footprint = lastMovePosition.get(player);
         if (player.getLocation().getYaw() != footprint.getYaw()) {

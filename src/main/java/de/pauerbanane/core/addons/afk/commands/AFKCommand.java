@@ -23,7 +23,8 @@ public class AFKCommand extends BaseCommand {
     @Default
     public void onDefault(Player sender, @Optional String reason) {
         if (addon.isAfk(sender)) {
-            Bukkit.broadcastMessage(F.main("AFK", "§e" + sender.getName() + " §7ist nach " + ChatColor.LIGHT_PURPLE + UtilTime.getElapsedTime(addon.getAfkTime().get(sender.getUniqueId())) + " §7wieder da."));
+            String message = ((System.currentTimeMillis() - addon.getAFKTime(sender)) >= 1000) ? "§e" + sender.getName() + " §7ist nach " + ChatColor.LIGHT_PURPLE + UtilTime.getElapsedTime(addon.getAfkTime().get(sender.getUniqueId())) + " §7wieder da." : "§e" + sender.getName() + " §7ist wieder da.";
+            Bukkit.broadcastMessage(F.main("AFK", message));
             addon.setAfk(sender, false);
         } else {
             addon.setAfk(sender, true);

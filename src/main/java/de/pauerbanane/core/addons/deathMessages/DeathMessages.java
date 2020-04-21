@@ -7,7 +7,9 @@ import de.pauerbanane.core.addons.Addon;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -69,25 +71,29 @@ public class DeathMessages extends Addon implements Listener {
     @EventHandler
     public void handleDeath(PlayerDeathEvent e) {
         EntityDamageEvent damageEvent = e.getEntity().getLastDamageCause();
+        e.setDeathMessage(formatMessage(defaultMessage, e.getEntity().getName()));
 
         if(damageEvent instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent event = (EntityDamageByEntityEvent) damageEvent;
-            if (event.getDamager().getType() != null)
+            if (event.getDamager().getType() != null && entityType.get(event.getDamager().getType()) != null) {
                 e.setDeathMessage(formatMessage(entityType.get(event.getDamager().getType()), e.getEntity().getName()));
+            } else if(event.getDamager() instanceof Projectile) {
+                Projectile projectile = (Projectile) event.getDamager();
+
+                if(projectile.getShooter() instanceof Entity) {
+                    Entity en = (Entity) ((Projectile) event.getDamager()).getShooter();
+                    e.setDeathMessage(formatMessage(entityType.get(en.getType()), e.getEntity().getName()));
+                }
+            }
 
         } else if(damageCause.containsKey(damageEvent.getCause())) {
             e.setDeathMessage(formatMessage(damageCause.get(damageEvent.getCause()), e.getEntity().getName()));
-        } else {
-            e.setDeathMessage(formatMessage(defaultMessage, e.getEntity().getName()));
         }
-
     }
 
     private String formatMessage(String message, String playerName) {
-        System.out.println(message);
         if(message.contains("%player%")) {
             String replaced = String.valueOf(ChatColor.GRAY + message.replace("%player%", ChatColor.YELLOW + playerName + ChatColor.GRAY));
-            System.out.println("Replaced: " + replaced);
             return replaced;
         } else return ChatColor.GRAY + message;
     }

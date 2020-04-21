@@ -20,11 +20,10 @@ public class GamemodeCommand extends BaseCommand {
             final Player target = op.getPlayer();
             target.sendMessage(F.main("Admin", "Dein Spielmodus wurde in " + F.name(StringUtils.capitalize(mode.name().toLowerCase())) + " geändert!"));
             sender.sendMessage(F.main("Admin", "Du hast den Spielmodus von " + F.name(target.getDisplayName()) + " in " + F.name(StringUtils.capitalize(mode.name().toLowerCase())) + " geändert!"));
-            target.setGameMode(mode);
+            op.getPlayer().setGameMode(mode);
         } else {
             sender.sendMessage(F.main("Admin", "Dein Spielmodus wurde in " + F.name(StringUtils.capitalize(mode.name().toLowerCase())) + " geändert!"));
             sender.setGameMode(mode);
         }
     }
-
 }

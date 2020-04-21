@@ -1,7 +1,10 @@
 package de.pauerbanane.core.commands;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
 import de.pauerbanane.acf.BukkitCommandIssuer;
 import de.pauerbanane.acf.ConditionFailedException;
 import de.pauerbanane.acf.InvalidCommandArgument;
@@ -13,8 +16,10 @@ import de.pauerbanane.core.addons.essentials.playerdata.HomeData;
 import de.pauerbanane.core.data.CorePlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.World;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,14 +46,40 @@ public class CommandSetup {
         final ImmutableList<String> gameModeList = ImmutableList.<String>builder().addAll(gameModeCompletion.collect(Collectors.toList())).build();
 
         commandManager.getCommandCompletions().registerCompletion("gamemode", c -> gameModeList);
+        commandManager.getCommandCompletions().registerCompletion("material", c -> {
+            List<String> materials = Lists.newArrayList();
+            for(int i = 0; i < Material.values().length; i++)
+                materials.add(Material.values()[i].toString().toLowerCase());
+            return ImmutableList.copyOf(materials);
+        });
         commandManager.getCommandCompletions().registerCompletion("addon", c -> {
             ImmutableList.Builder<String> builder = ImmutableList.builder();
             plugin.getAddonManager().getAddons().forEach(addon -> builder.add(addon.getName()));
             return builder.build();
         });
+        commandManager.getCommandCompletions().registerCompletion("region", c -> {
+            World world = c.getPlayer().getWorld();
+            return ImmutableList.copyOf(WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world)).getRegions().keySet());
+        });
+        commandManager.getCommandCompletions().registerCompletion("nodetype", c -> {
+            return ImmutableList.of("permission", "meta", "prefix", "suffix");
+        });
+        commandManager.getCommandCompletions().registerCompletion("boolean", c -> {
+            return ImmutableList.of("true", "false");
+        });
+        commandManager.getCommandCompletions().registerCompletion("server", c -> ImmutableList.of("survival", "lobby", "beta"));
     }
 
     public void registerCommandContexts() {
+        commandManager.getCommandContexts().registerContext(Material.class, c -> {
+            final String tag = c.popFirstArg();
+            Material material = Material.getMaterial(tag.toUpperCase());
+            if(material != null) {
+                return material;
+            } else
+                throw new InvalidCommandArgument("Invalid Material specified.");
+
+        });
         commandManager.getCommandContexts().registerContext(GameMode.class, c -> {
 
             final String tag = c.popFirstArg();
@@ -85,7 +116,6 @@ public class CommandSetup {
             } else
                 throw new InvalidCommandArgument("Invalid Addon specified.");
         });
-
     }
 
     public void registerCommandConditions() {

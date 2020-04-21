@@ -1,6 +1,9 @@
 package de.pauerbanane.core.data;
 
+import de.pauerbanane.api.util.UtilMath;
 import de.pauerbanane.core.BananaCore;
+import net.luckperms.api.node.types.MetaNode;
+import net.luckperms.api.node.types.PermissionNode;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,6 +39,35 @@ public class PlayerDataLoader implements Listener {
      */
     @EventHandler
     public void loadPlayer(PlayerJoinEvent e) {
+        if(PermissionManager.hasMetaValue(e.getPlayer(), "homelimit", 2, null, null)) {
+            String value = PermissionManager.getMetaValue(e.getPlayer().getUniqueId(), "homelimit", null, null);
+            if(!UtilMath.isInt(value)) return;
+            MetaNode newNode = PermissionManager.buildMetaNode("homelimit", value, "survival", null);
+            MetaNode oldNode = PermissionManager.buildMetaNode("homelimit", value, null, null);
+
+            PermissionManager.removeNode(e.getPlayer(), oldNode);
+            PermissionManager.addNode(e.getPlayer(), newNode);
+
+            BananaCore.getInstance().getLogger().info("Reassigned MetaNode 'homelimit' for Player " + e.getPlayer().getName() + " with value '" + value + "'");
+        }
+        if(PermissionManager.hasNode(e.getPlayer().getUniqueId(), PermissionManager.buildPermissionNode("lizenz.endwelt", true, null, null))) {
+            PermissionNode oldNode = PermissionManager.buildPermissionNode("lizenz.endwelt", true, null, null);
+            PermissionNode newNode = PermissionManager.buildPermissionNode("lizenz.endwelt", true, "survival", null);
+
+            PermissionManager.removeNode(e.getPlayer(), oldNode);
+            PermissionManager.addNode(e.getPlayer(), newNode);
+
+            BananaCore.getInstance().getLogger().info("Reassigned PermissionNode 'lizenz.endwelt' for Player " + e.getPlayer().getName());
+        }
+        if(PermissionManager.hasNode(e.getPlayer().getUniqueId(), PermissionManager.buildPermissionNode("kccore.plots.shops", true, null, null))) {
+            PermissionNode oldNode = PermissionManager.buildPermissionNode("kccore.plots.shops", true, null, null);
+            PermissionNode newNode = PermissionManager.buildPermissionNode("plots.shops", true, "survival", null);
+
+            PermissionManager.removeNode(e.getPlayer(), oldNode);
+            PermissionManager.addNode(e.getPlayer(), newNode);
+
+            BananaCore.getInstance().getLogger().info("Reassigned PermissionNode 'plots.shops' for Player " + e.getPlayer().getName());
+        }
         new CorePlayer(e.getPlayer().getUniqueId());
     }
 

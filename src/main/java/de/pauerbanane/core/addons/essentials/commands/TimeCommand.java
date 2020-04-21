@@ -34,10 +34,10 @@ public class TimeCommand extends BaseCommand {
                 issuer.sendMessage(F.error(String.valueOf(time) + " muss zwischen 0 und 24000 sein."));
                 return;
             }
-            String timeformat = DateTickFormat.format24(issuer.getWorld().getTime());
             String worldname = issuer.getWorld().getName();
             issuer.getWorld().setTime(time);
-            Bukkit.broadcastMessage("Zeit in Welt " + F.name(worldname) + " wurde von " + F.name(issuer.getDisplayName()) + " auf " + timeformat + " gesetzt.");
+            String timeformat = DateTickFormat.format24(issuer.getWorld().getTime());
+            Bukkit.broadcastMessage("§7Zeit in Welt §e" + worldname + " §7wurde von §6" + issuer.getName() + " §7auf §e" + timeformat + " §7gesetzt.");
             UtilPlayer.playSound(issuer, Sound.AMBIENT_UNDERWATER_LOOP_ADDITIONS_ULTRA_RARE);
         }
 }

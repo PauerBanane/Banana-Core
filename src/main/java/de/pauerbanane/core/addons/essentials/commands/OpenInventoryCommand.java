@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 @CommandAlias("openinv|invsee|openinventory")
-@CommandPermission("kccore.openinv")
+@CommandPermission("command.openinv")
 public class OpenInventoryCommand extends BaseCommand {
 
     @Default

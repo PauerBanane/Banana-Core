@@ -23,6 +23,7 @@ public class TeleportCommand extends BaseCommand {
             target.getPlayer().teleport((Entity)op.getPlayer(), PlayerTeleportEvent.TeleportCause.COMMAND);
             return;
         }
+
         sender.sendMessage(F.main("Teleport", "Teleportiere zu " + F.name(target.getPlayer().getDisplayName())));
         sender.teleport((Entity)target.getPlayer(), PlayerTeleportEvent.TeleportCause.COMMAND);
         UtilPlayer.playSound(sender, Sound.ENTITY_ENDERMAN_TELEPORT);

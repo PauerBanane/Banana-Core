@@ -3,10 +3,12 @@ package de.pauerbanane.core.addons;
 import com.google.common.collect.Lists;
 import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.PaperCommandManager;
+import de.pauerbanane.api.npcattachment.NPCInteractAttachment;
 import de.pauerbanane.core.BananaCore;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public abstract class Addon {
@@ -39,6 +41,10 @@ public abstract class Addon {
         enabled = false;
     }
 
+    public void registerNPCAttachment(NPCInteractAttachment attachment) {
+        BananaCore.getApi().getNpcDataHandler().registerAttachment(attachment);
+    }
+
     public void registerCommand(BaseCommand command) {
         plugin.registerCommand(command);
         registeredCommands.add(command);
@@ -63,7 +69,19 @@ public abstract class Addon {
         return name;
     }
 
+    public String getAddonFolder() {
+        return plugin.getDataFolder().getPath() + File.separator + "Addons" + File.separator;
+    }
+
     public Boolean isEnabled() {
         return enabled;
+    }
+
+    public BananaCore getPlugin() {
+        return plugin;
+    }
+
+    public PluginManager getPluginManager() {
+        return pluginManager;
     }
 }

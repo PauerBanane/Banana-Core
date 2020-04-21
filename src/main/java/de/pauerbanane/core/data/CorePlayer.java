@@ -1,15 +1,15 @@
 package de.pauerbanane.core.data;
 
 import com.google.common.collect.Maps;
-import java.util.HashMap;
-import java.util.UUID;
-
 import de.pauerbanane.api.data.PlayerData;
 import de.pauerbanane.api.data.PlayerDataManager;
 import de.pauerbanane.core.BananaCore;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class CorePlayer {
 
@@ -28,11 +28,9 @@ public class CorePlayer {
         this.uuid = uuid;
         Player player = Bukkit.getPlayer(uuid);
         if (player != null && player.isOnline()) {
-            if (PermissionManager.getContext(uuid).isPresent()) {
-                String prefix = PermissionManager.getPlayerPrefix(uuid);
-                String suffix = PermissionManager.getPlayerSuffix(uuid);
-                player.setDisplayName(prefix + ChatColor.WHITE + player.getName() + suffix);
-            }
+            String prefix = PermissionManager.getPlayerPrefix(uuid);
+            String suffix = PermissionManager.getPlayerSuffix(uuid);
+            player.setDisplayName(prefix + ChatColor.GRAY + " " + ChatColor.WHITE + player.getName() + " " + suffix);
         }
     }
 
@@ -42,7 +40,7 @@ public class CorePlayer {
 
     public static CorePlayer get(UUID uuid) {
         if (!players.containsKey(uuid))
-            return null;
+            return new CorePlayer(uuid);
         return players.get(uuid);
     }
 

@@ -1,13 +1,13 @@
 package de.pauerbanane.core.addons.essentials.commands.tpa;
 
-import java.util.UUID;
-
 import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.annotation.*;
 import de.pauerbanane.acf.bukkit.contexts.OnlinePlayer;
 import de.pauerbanane.api.util.F;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @CommandAlias("tpa")
 public class TpaCommand extends BaseCommand {
@@ -19,7 +19,7 @@ public class TpaCommand extends BaseCommand {
     }
 
     @Default
-    @CommandCompletion("@players")
+    @CommandCompletion("@players @nothing")
     @CommandPermission("command.tpa")
     public void sendRequest(Player player, OnlinePlayer target) {
         this.manager.addRequest(player, target.getPlayer(), TeleportRequestManager.TeleportRequestType.TELEPORT_TO);

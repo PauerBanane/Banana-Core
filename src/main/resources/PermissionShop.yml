@@ -1,0 +1,229 @@
+betahinweis:
+  displayName: "§4BETA"
+  icon: GOLD_NUGGET
+  modelData: 1
+  lore:
+    - '§eAlle Rechte und deren Preise werden'
+    - '§eunter Vorbehalt, in Abhängigkeit von'
+    - '§eder Wirtschaftsentwicklung, angeboten.'
+  price: 999999999999
+  permissions:
+    - 'command.betahinweis'
+  server: "survival"
+  world: "global"
+homes2:
+  displayName: "§6Home Nr. 2"
+  icon: GOLD_NUGGET
+  modelData: 2
+  lore:
+    - '§eHiermit schaltest du ein zweites Home frei'
+    - ''
+    - '§ePreis:§2 4.000 Taler'
+  price: 4000
+  permissions:
+    - 'meta:homelimit;2'
+  server: "survival"
+  world: "global"
+homes3:
+  displayName: "§6Home Nr. 3"
+  icon: GOLD_NUGGET
+  modelData: 3
+  lore:
+    - '§eHiermit schaltest du ein drittes Home frei'
+    - ''
+    - '§ePreis:§2 7.000 Taler'
+  price: 7000
+  permissions:
+    - 'meta:homelimit;3'
+  condition: "homes2"
+  server: "survival"
+  world: "global"
+homes4:
+  displayName: "§6Home Nr. 4"
+  icon: GOLD_NUGGET
+  modelData: 4
+  lore:
+    - '§eHiermit schaltest du ein viertes Home frei'
+    - ''
+    - '§ePreis:§2 10.000 Taler'
+  price: 10000
+  permissions:
+    - 'meta:homelimit;4'
+  condition: "homes3"
+  server: "survival"
+  world: "global"
+homes5:
+  displayName: "§6Home Nr. 5"
+  icon: GOLD_NUGGET
+  modelData: 5
+  lore:
+    - '§eHiermit schaltest du ein Fünftes Home frei'
+    - ''
+    - '§ePreis:§2 15.000 Taler'
+  price: 15000
+  permissions:
+    - 'meta:homelimit;5'
+  condition: "homes4"
+  server: "survival"
+  world: "global"
+homes-mehr:
+  displayName: "§6Home Nr..."
+  icon: GOLD_NUGGET
+  modelData: 6
+  lore:
+    - '§ecoming soon...'
+  price: 9999999999
+  permissions:
+    - 'meta:homelimit;x'
+  server: "survival"
+  world: "global"
+shop-lizenz:
+  displayName: "§6Shop-Lizenz"
+  icon: GOLD_NUGGET
+  modelData: 8
+  lore:
+    - '§eHiermit schaltest du die Möglichkeit frei,'
+    - '§eim Spielershop einen Shop eröffnen zu dürfen.'
+    - ''
+    - '§ePreis:§2 10.000 Taler'
+  price: 10000
+  permissions:
+    - 'plots.shops'
+  server: "survival"
+  world: "global"
+weather:
+  displayName: "§6Wettergott"
+  icon: GOLD_NUGGET
+  modelData: 7
+  lore:
+    - '§eKontrolliere das Wetter mit §a/weather'
+    - ''
+    - '§ePreis:§2 100.000 Taler'
+  price: 100000
+  permissions:
+    - 'command.weather'
+  server: "survival"
+  world: "global"
+time:
+  displayName: "§6Herr der Zeit"
+  icon: CLOCK
+  lore:
+    - '§eVerändere die Tageszeit mit §a/time§e, §a/day §eoder §a/night'
+    - ''
+    - '§ePreis:§2 150.000 Taler'
+  price: 150000
+  permissions:
+    - 'command.time'
+  server: "survival"
+  world: "global"
+tpa:
+  displayName: "§6Herr des Raums"
+  icon: COMPASS
+  lore:
+    - '§eTeleportiere dich zu einem Mitspieler'
+    - '§eoder sie zu dir mit §a/tpa §eund §a/tpahere'
+    - ''
+    - '§ePreis:§2 125.000 Taler'
+  price: 125000
+  permissions:
+    - 'command.tpa'
+  server: "survival"
+  world: "global"
+workbench:
+  displayName: "§6Mobile Werkbank"
+  icon: CRAFTING_TABLE
+  lore:
+    - '§eNutze eine mobile Werkbank zum Craften'
+    - '§emit §a/workbench §eoder §a/wb'
+    - ''
+    - '§ePreis:§2 25.000 Taler'
+  price: 25000
+  permissions:
+    - 'command.workbench'
+  server: "survival"
+  world: "global"
+enderchest:
+  displayName: "§6Mobile Enderchest"
+  icon: ENDER_CHEST
+  lore:
+    - '§eNutze eine mobile Enderchest bspw. als'
+    - '§eRucksack mit §a/enderchest'
+    - ''
+    - '§ePreis:§2 60.000 Taler'
+  price: 60000
+  permissions:
+    - 'command.enderchest'
+  server: "survival"
+  world: "global"
+fly:
+  displayName: "§6Fly"
+  icon: ELYTRA
+  lore:
+    - '§eFliege durch die Welt wie ein Gott mit §a/fly'
+    - ''
+    - '§ePreis:§2 750.000 Taler'
+  price: 800000
+  permissions:
+    - 'command.fly'
+  server: "survival"
+  world: "global"
+end-lizenz:
+  displayName: "§6Reise ins End..."
+  icon: DRAGON_HEAD
+  lore:
+    - '§eErmögliche dir die Möglichkeit ins End zu reisen'
+    - ''
+    - '§ePreis:§2 15.000 Taler'
+  price: 15000
+  permissions:
+    - 'lizenz.endwelt'
+  server: "survival"
+  world: "global"
+stahlaxt:
+  displayName: "§6Magische Äxte..."
+  icon: IRON_AXE
+  modelData: 1
+  lore:
+    - '§eErmöglicht dir das Craften'
+    - '§eder magischen Stahlaxt'
+    - ''
+    - '§ePreis:§2 coming soon...'
+  price: 999999999999
+  permissions:
+    - 'cc.stahlaxt'
+  server: "survival"
+  world: "global"
+rubinaxt:
+  displayName: "§6Magische Äxte..."
+  icon: DIAMOND_AXE
+  modelData: 1
+  lore:
+    - '§eErmöglicht dir als §6Schmied §edas'
+    - '§eCraften der magischen Rubinaxt'
+    - ''
+    - '§ePreis:§2 coming soon...'
+  price: 999999999999
+  permissions:
+    - 'cc.rubinaxt'
+  server: "survival"
+  world: "global"
+armorstandeditor:
+  displayName: "§6Rüstungsständertool"
+  icon: ARMOR_STAND
+  lore:
+    - '§ecoming soon...'
+  price: 9999999999
+  permissions:
+    - 'asedit.showarms'
+    - 'asedit.baseplate'
+    - 'asedit.head'
+    - 'asedit.body'
+    - 'asedit.positionarms'
+    - 'asedit.positionlegs'
+    - 'asedit.leftarm'
+    - 'asedit.rightarm'
+    - 'asedit.rightleg'
+    - 'asedit.leftleg'
+    - 'asedit.rotate'
+  server: "survival"
+  world: "global"
