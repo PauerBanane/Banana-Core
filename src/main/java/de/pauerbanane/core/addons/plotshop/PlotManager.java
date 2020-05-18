@@ -92,6 +92,14 @@ public class PlotManager {
         savePlot(plot);
     }
 
+    public void reRentPlot(Player player, Plot plot) {
+        if(plot.isRentable()) {
+            plot.setExpireDate(LocalDateTime.now().plusDays(plot.getPlotGroup().getRentDays()));
+            player.sendMessage(F.main("Plot", "Du hast das Grundstück bis zum §e" + plot.getExpireDateFormatted() + " §7verlängert."));
+            savePlot(plot);
+        }
+    }
+
     public void savePlot(Plot plot) {
         File file = new File(this.plotFolder, plot.getRegionID() + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);

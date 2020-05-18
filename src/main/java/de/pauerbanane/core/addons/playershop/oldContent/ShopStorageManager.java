@@ -5,6 +5,8 @@ import de.pauerbanane.api.util.UtilInv;
 import de.pauerbanane.core.addons.playershop.PlayerShop;
 import de.pauerbanane.core.addons.playershop.Shop;
 import de.pauerbanane.core.addons.playershop.ShopContent;
+import de.pauerbanane.core.addons.plotshop.Plot;
+import de.pauerbanane.core.addons.plotshop.PlotShop;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,6 +39,8 @@ public class ShopStorageManager {
 
     public void saveOnReset(Shop shop) {
         if(shop.getOwner() == null) return;
+        Plot plot = PlotShop.getInstance().getManager().getPlot(shop.getPlotRegion());
+        if(!plot.getPlotGroup().getGroupID().equalsIgnoreCase("shops")) return;
 
         File file = new File(dataFolder, shop.getOwner().toString() + ".yml");
         if(file.exists()) {

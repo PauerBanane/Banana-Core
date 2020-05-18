@@ -23,8 +23,8 @@ public class TpaCommand extends BaseCommand {
     @CommandPermission("command.tpa")
     public void sendRequest(Player player, OnlinePlayer target) {
         this.manager.addRequest(player, target.getPlayer(), TeleportRequestManager.TeleportRequestType.TELEPORT_TO);
-        player.sendMessage(F.main("Teleport", "Anfrage an " + target.getPlayer().getName() + " wurde gesendet"));
-        target.getPlayer().sendMessage(F.main("Teleport", "Du hast eine neue Teleportanfrage von " + player.getDisplayName()));
+        player.sendMessage(F.main("Teleport", "Anfrage an " + target.getPlayer().getName() + " wurde gesendet."));
+        target.getPlayer().sendMessage(F.main("Teleport", "Du hast eine neue Teleportanfrage von §e" + player.getDisplayName() + "§7."));
     }
 
     @Subcommand("accept")
@@ -35,7 +35,7 @@ public class TpaCommand extends BaseCommand {
             return;
         }
         if (!this.manager.getActiveRequests(player).contains(target.getPlayer().getUniqueId())) {
-            player.sendMessage(F.main("Teleport", "Du hast keine Anfrage von " + F.name(target.getPlayer().getDisplayName())));
+            player.sendMessage(F.main("Teleport", "Du hast keine Anfrage von §e" + F.name(target.getPlayer().getDisplayName() + "§7.")));
             return;
         }
         this.manager.acceptRequest(player, target.getPlayer().getUniqueId());
@@ -45,7 +45,7 @@ public class TpaCommand extends BaseCommand {
     @CommandCompletion("@players")
     public void denyRequest(Player player, String targetID) {
         if (this.manager.getActiveRequests(player).isEmpty()) {
-            player.sendMessage("Keine aktiven Anfragen.");
+            player.sendMessage(F.main("Teleport", "Du hast keine aktiven Teleportanfragen."));
             return;
         }
         UUID target = UUID.fromString(targetID);

@@ -42,7 +42,7 @@ public class ResourcepackListener implements Listener {
         } else if (status == PlayerResourcePackStatusEvent.Status.FAILED_DOWNLOAD) {
             if (attempts.contains(id)) {
                 attempts.remove(id);
-                player.kickPlayer("Das Resourcepack wurde nicht akzeptiert.");
+                player.kickPlayer("Bitte akzeptiere das Resourcepack\n -> Mehrspieler - KnicksCraft - Bearbeiten - Server-Ressourcenpakete: 'Abfrage'");
                 return;
             } else {
                 attempts.add(id);
@@ -52,7 +52,7 @@ public class ResourcepackListener implements Listener {
             }
 
         } else if (status == PlayerResourcePackStatusEvent.Status.DECLINED) {
-            player.kickPlayer("Das Resourcepack wurde nicht akzeptiert.");
+            player.kickPlayer("§fBitte akzeptiere das Resourcepack:\n§eMehrspieler §7- §eKnicksCraft §7- §eBearbeiten §7- §eServer-Ressourcenpakete: §7'§2Abfrage§7'\n§aVielen Dank! §e:)");
         }
     }
 

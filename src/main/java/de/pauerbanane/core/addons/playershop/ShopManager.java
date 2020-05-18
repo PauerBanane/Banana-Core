@@ -137,7 +137,7 @@ public class ShopManager {
         ct.setStock(0);
         for(int i = 0; i < items.length; i++) {
             if(items[i] != null) {
-                if (items[i].getType() == ct.getItem().getType()) {
+                if (items[i].isSimilar(ct.getItem())) {
                     ct.setStock(ct.getStock() + items[i].getAmount());
                 } else
                     player.getInventory().addItem(items[i]);

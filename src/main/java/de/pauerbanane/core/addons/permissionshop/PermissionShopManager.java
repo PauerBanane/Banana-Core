@@ -36,7 +36,7 @@ public class PermissionShopManager {
                 addon.getPlugin().getLogger().warning("No material matching " + section.getString("icon") + " found");
                 continue;
             }
-            int modelData = section.getInt(name + "modelData");
+            int modelData = section.getInt("modelData");
             List<String> lore = section.getStringList("lore");
             String condition = section.getString("condition");
             List<String> permissions = section.getStringList("permissions");

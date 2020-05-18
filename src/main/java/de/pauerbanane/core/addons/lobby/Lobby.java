@@ -4,14 +4,12 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import de.pauerbanane.api.smartInventory.SmartInventory;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.FileLoader;
-import de.pauerbanane.api.util.ItemBuilder;
 import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.addons.Addon;
+import de.pauerbanane.core.addons.lobby.server.ServerInterfaceManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,7 +18,6 @@ import org.bukkit.event.entity.EntityAirChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +31,7 @@ public class Lobby extends Addon implements Listener {
 
     private String firstJoinMessage;
 
-    private String serverInterfaceItemName;
-
-    private ItemStack serverInterfaceItem;
+    private ServerInterfaceManager serverManager;
 
     @Override
     public void onEnable() {
@@ -46,13 +41,14 @@ public class Lobby extends Addon implements Listener {
         }
         rulesNotAccepted = Lists.newArrayList();
         loadConfig();
+        this.serverManager = new ServerInterfaceManager(this);
 
-        serverInterfaceItemName = "§7>§6> §e§lServer auswählen";
-        serverInterfaceItem = new ItemBuilder(Material.COMPASS).name(serverInterfaceItemName).build();
+
 
         registerCommand(new RulesAcceptCommand(this));
 
         registerListener(this);
+        registerListener(serverManager);
     }
 
     @Override
@@ -112,7 +108,7 @@ public class Lobby extends Addon implements Listener {
     public void handleLobbyJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         p.getInventory().clear();
-        p.getInventory().setItem(0, serverInterfaceItem);
+        p.getInventory().setItem(0, serverManager.getServerInterfaceItem());
 
         p.setHealth(20);
         p.setFoodLevel(20);
@@ -134,21 +130,7 @@ public class Lobby extends Addon implements Listener {
         }
     }
 
-    @EventHandler
-    public void handleServerInterfaceOpen(PlayerInteractEvent e) {
-        if (!hasAcceptedRules(e.getPlayer().getUniqueId())) {
-            e.getPlayer().sendMessage(F.error("Regeln", "Du musst zuerst die Regeln akzeptieren. §e/accept"));
-            e.setCancelled(true);
-            return;
-        }
-        Player p = e.getPlayer();
-        ItemStack itemInHand = p.getInventory().getItemInMainHand();
 
-        if(itemInHand.getType() == Material.AIR) return;
-        if(!itemInHand.getItemMeta().getDisplayName().equalsIgnoreCase(serverInterfaceItemName)) return;
-
-        SmartInventory.builder().provider(new ServerGUI()).title("§7Server-Auswahl").size(1).build().open(p);
-    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void handlePlayerJoin(PlayerJoinEvent e) {
@@ -176,4 +158,7 @@ public class Lobby extends Addon implements Listener {
         rulesNotAccepted.remove(uuid);
     }
 
+    public FileLoader getConfig() {
+        return config;
+    }
 }

@@ -5,6 +5,7 @@ import de.pauerbanane.core.addons.playershop.Shop;
 import de.pauerbanane.core.addons.playershop.ShopManager;
 import de.pauerbanane.core.addons.playershop.oldContent.ShopStorageManager;
 import de.pauerbanane.core.addons.plotshop.events.PlotExpireEvent;
+import de.pauerbanane.core.addons.plotshop.events.PlotPurchaseEvent;
 import de.pauerbanane.core.addons.plotshop.events.PlotRentEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -49,6 +50,14 @@ public class ShopListener implements Listener {
 
     @EventHandler
     public void onRent(PlotRentEvent event) {
+        if (!this.manager.isShopRegion(event.getPlot().getRegionID()))
+            return;
+        Shop shop = this.manager.getShopByRegion(event.getPlot().getRegionID());
+        shop.update(event.getPlot());
+    }
+
+    @EventHandler
+    public void onBuy(PlotPurchaseEvent event) {
         if (!this.manager.isShopRegion(event.getPlot().getRegionID()))
             return;
         Shop shop = this.manager.getShopByRegion(event.getPlot().getRegionID());

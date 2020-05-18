@@ -1,6 +1,8 @@
 package de.pauerbanane.core.addons.chairs;
 
 import de.pauerbanane.api.util.F;
+import de.pauerbanane.core.addons.settings.data.Settings;
+import de.pauerbanane.core.data.CorePlayer;
 import org.bukkit.Material;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.event.EventHandler;
@@ -28,6 +30,10 @@ public class SitListener implements Listener {
         if(!(e.getClickedBlock().getBlockData() instanceof Stairs)) return;
         if(e.getPlayer().isSneaking()) return;
 
+        CorePlayer cp = CorePlayer.get(e.getPlayer().getUniqueId());
+        Settings settings = cp.getData(Settings.class);
+
+        if(!settings.autoSitEnabled()) return;
         addon.toggleSit(e.getPlayer(), e.getClickedBlock());
     }
 

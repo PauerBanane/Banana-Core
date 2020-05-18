@@ -15,6 +15,7 @@ public class PlotUserCommand extends BaseCommand {
 
     private PlotShop addon;
 
+
     public PlotUserCommand(PlotShop addon) {
         this.addon = addon;
     }
@@ -51,6 +52,38 @@ public class PlotUserCommand extends BaseCommand {
             return;
         }
         sender.sendMessage(F.error("Plot", "Du hast nicht genügend Geld um das Grundstück zu kaufen."));
+    }
+
+    @Subcommand("verlängern")
+    public void reRent(Player sender) {
+        if(!addon.getReRentCache().containsKey(sender.getUniqueId())) {
+            if (!addon.getTempReRentCache().containsKey(sender.getUniqueId())) {
+                sender.sendMessage(F.error("Plot", "Du musst auf deinem Grundstück stehen."));
+                return;
+            }
+            Plot plot = addon.getTempReRentCache().get(sender.getUniqueId());
+            if (!plot.getOwner().equals(sender.getUniqueId())) {
+                sender.sendMessage(F.error("Plot", "Du kannst kein fremdes Grundstück verlängern."));
+                return;
+            }
+            if (!plot.isRentable()) {
+                sender.sendMessage(F.error("Plot", "Du hast das Plot bereits gekauft."));
+                return;
+            }
+
+            sender.sendMessage(F.main("Plot", "Du kannst dein Grundstück ab §ediesem Zeitpunkt"));
+            sender.sendMessage(F.main("Plot", "um weitere §e" + plot.getPlotGroup().getRentDays() + " Tage §7verlängern."));
+            sender.sendMessage(F.main("Plot", "Gebe dazu erneut §2/plot verlängern §7ein."));
+            sender.sendMessage(F.main("Plot", "Kosten: §e" + plot.getPrice() + " Taler"));
+
+            addon.getReRentCache().put(sender.getUniqueId(), plot);
+        } else {
+            Plot plot = addon.getReRentCache().get(sender.getUniqueId());
+            if(BananaCore.getEconomy().withdrawPlayer(sender, plot.getPrice()).transactionSuccess()) {
+                addon.getManager().reRentPlot(sender, plot);
+            } else
+                sender.sendMessage(F.error("Plot", "Du hast nicht genügend Geld, um dein Grundstück zu verlängern."));
+        }
     }
 
     @Subcommand("info")

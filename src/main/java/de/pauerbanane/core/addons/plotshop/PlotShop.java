@@ -7,14 +7,18 @@ import de.pauerbanane.api.regionevents.RegionEnterEvent;
 import de.pauerbanane.api.regionevents.RegionLeaveEvent;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.FileLoader;
+import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.addons.Addon;
 import de.pauerbanane.core.addons.plotshop.commands.PlotAdminCommand;
 import de.pauerbanane.core.addons.plotshop.commands.PlotUserCommand;
 import de.pauerbanane.core.addons.plotshop.listener.ExpireListener;
+import de.pauerbanane.core.addons.plotshop.scoreboard.PlotBoard;
+import de.pauerbanane.core.addons.plotshop.scoreboard.PurchasedPlotBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.io.File;
@@ -33,10 +37,16 @@ public class PlotShop extends Addon implements Listener {
 
     private HashMap<UUID, Plot> tempPurchaseCache;
 
+    private HashMap<UUID, Plot> tempReRentCache;
+
+    private HashMap<UUID, Plot> reRentCache;
+
     @Override
     public void onEnable() {
         this.instance = this;
         this.tempPurchaseCache = Maps.newHashMap();
+        this.tempReRentCache = Maps.newHashMap();
+        this.reRentCache = Maps.newHashMap();
         ConfigurationSerialization.registerClass(Plot.class, "plot");
         this.plotGroupConfig = new FileLoader(getAddonFolder() + "PlotGroups.yml");
         this.manager = new PlotManager(this);
@@ -56,8 +66,7 @@ public class PlotShop extends Addon implements Listener {
 
     }
 
-
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onRegionEnter(RegionEnterEvent e) {
         if(!manager.isPlotRegion(e.getRegion().getId())) return;
 
@@ -65,15 +74,27 @@ public class PlotShop extends Addon implements Listener {
         Player player = e.getPlayer();
         if(plot.getOwner() == null) {
             tempPurchaseCache.put(player.getUniqueId(), plot);
+            BananaCore.getScoreboardAPI().getBoardManager().setBoard(e.getPlayer(), new PlotBoard(plot));
         } else if(player.getUniqueId().equals(plot.getOwner()) && plot.isRentable() && plot.isAboutToExpire()) {
             player.sendMessage(F.main("Plot", "Dein Grundstück §e" + plot.getRegion().getId() + " §7wird in §e" + plot.getExpireHours() + " Stunden §7ablaufen."));
+            player.sendMessage(F.main("Plot", "Gebe §2/plot verlängern §7ein, um die Mietdauer zu verlängern."));
         }
+
+        if(plot.getOwner() != null && plot.getOwner().equals(player.getUniqueId()) && plot.isRentable())
+            tempReRentCache.put(player.getUniqueId(), plot);
+
+        if(plot.getOwner() != null)
+            BananaCore.getScoreboardAPI().getBoardManager().setBoard(e.getPlayer(), new PurchasedPlotBoard(plot));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onRegionLeave(RegionLeaveEvent e) {
         if(!manager.isPlotRegion(e.getRegion().getId())) return;
         tempPurchaseCache.remove(e.getPlayer().getUniqueId());
+        tempReRentCache.remove(e.getPlayer().getUniqueId());
+        reRentCache.remove(e.getPlayer().getUniqueId());
+
+        BananaCore.getScoreboardAPI().getBoardManager().resetBoard(e.getPlayer());
     }
 
 
@@ -138,5 +159,13 @@ public class PlotShop extends Addon implements Listener {
 
     public HashMap<UUID, Plot> getTempPurchaseCache() {
         return tempPurchaseCache;
+    }
+
+    public HashMap<UUID, Plot> getReRentCache() {
+        return reRentCache;
+    }
+
+    public HashMap<UUID, Plot> getTempReRentCache() {
+        return tempReRentCache;
     }
 }
