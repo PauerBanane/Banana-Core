@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 
 @CommandAlias("event")
-public class TopTenCommand extend s BaseCommand {
+public class TopTenCommand extends BaseCommand {
 
     @Subcommand("top")
     public void toplist(Player sender) {
