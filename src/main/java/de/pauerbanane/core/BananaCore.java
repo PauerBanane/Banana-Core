@@ -27,6 +27,7 @@ import de.pauerbanane.core.addons.settings.PlayerSettings;
 import de.pauerbanane.core.addons.settings.data.Settings;
 import de.pauerbanane.core.addons.snowcontrol.SnowControl;
 import de.pauerbanane.core.addons.tab.Tab;
+import de.pauerbanane.core.addons.ultrahardcore.UltraHardcore;
 import de.pauerbanane.core.commands.AddonCommand;
 import de.pauerbanane.core.commands.CheckPermissionCommand;
 import de.pauerbanane.core.commands.CommandSetup;
@@ -101,7 +102,7 @@ public class BananaCore extends JavaPlugin {
         commandSetup.registerCommandCompletions();
         commandSetup.registerCommandContexts();
 
-        if(!setupEconomy() && !serverName.equalsIgnoreCase("lobby")) {
+        if(!setupEconomy() && !serverName.equalsIgnoreCase("lobby") && !serverName.equalsIgnoreCase("ultra-hardcore")) {
             getLogger().severe("Es konnte kein Economy Plugin gefunden werden!");
             getLogger().severe("Plugin wird nicht geladen.");
             return;
@@ -164,6 +165,7 @@ public class BananaCore extends JavaPlugin {
         addonManager.registerAddon(new SnowControl(), "SnowControl");
         addonManager.registerAddon(new Tab(), "Tab");
         addonManager.registerAddon(new DeathMessages(), "Todesnachrichten");
+        addonManager.registerAddon(new UltraHardcore(), "Ultra-Hardcore");
     }
 
     public void registerCommand(BaseCommand command) {
