@@ -1,6 +1,6 @@
 name: Banana-Core
 main: de.pauerbanane.core.BananaCore
-version: 1.0
+version: 1.16.1-R0.1
 depend: [Banana-API, LuckPerms, Vault]
 softdepend: [Banana-Economy, TAB]
 api-version: 1.15
