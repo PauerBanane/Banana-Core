@@ -1,7 +1,7 @@
 package de.pauerbanane.core.addons.plotshop.gui;
 
 import com.sk89q.worldguard.domains.DefaultDomain;
-import de.pauerbanane.api.anvilgui.AnvilGUI;
+import de.pauerbanane.api.chatinput.ChatInput;
 import de.pauerbanane.api.smartInventory.ClickableItem;
 import de.pauerbanane.api.smartInventory.content.InventoryContents;
 import de.pauerbanane.api.smartInventory.content.InventoryProvider;
@@ -40,22 +40,19 @@ public class PlotMemberGUI implements InventoryProvider {
             }));
         }
         contents.set(SlotPos.of(3, 4), ClickableItem.of(new ItemBuilder(Material.EMERALD).name("§2Spieler hinzufügen").build(),  e -> {
-            new AnvilGUI.Builder().item(new ItemBuilder(Material.PLAYER_HEAD).name("§2Spieler hinzufügen").build())
-                                  .onComplete((p,t) -> {
-                                      if(!BananaCore.getInstance().getPlayerDataManager().getPluginStorage(BananaCore.getInstance()).checkIfExists(t))
-                                          return AnvilGUI.Response.text("§cSpieler existiert nicht");
-                                      UUID target = BananaCore.getInstance().getPlayerDataManager().getPluginStorage(BananaCore.getInstance()).getIDbyName(t);
-                                      DefaultDomain members = this.plot.getRegion().getMembers();
-                                      members.addPlayer(target);
-                                      this.plot.getRegion().setMembers(members);
-                                      player.sendMessage("Du hast §e" + t + " §7Baurechte auf diesem Grundstgegeben.");
-                                      UtilPlayer.playSound(player, Sound.BLOCK_NOTE_BLOCK_GUITAR, 0.8F, 1.25F);
-                                      reOpen(player, contents);
-                                      return AnvilGUI.Response.close();
-                                  })
-                                  .title("§2Spieler hinzufügen")
-                                  .plugin(BananaCore.getInstance())
-                                  .open(player);
+            new ChatInput(player, "Gib den Spielernamen ein:", t -> {
+                if(!BananaCore.getInstance().getPlayerDataManager().getPluginStorage(BananaCore.getInstance()).checkIfExists(t)) {
+                    player.sendActionBar(F.error("Plot", "Dieser Spieler existiert nicht."));
+                    return;
+                }
+                UUID target = BananaCore.getInstance().getPlayerDataManager().getPluginStorage(BananaCore.getInstance()).getIDbyName(t);
+                DefaultDomain members = this.plot.getRegion().getMembers();
+                members.addPlayer(target);
+                this.plot.getRegion().setMembers(members);
+                player.sendMessage("Du hast §e" + t + " §7Baurechte auf diesem Grundstgegeben.");
+                UtilPlayer.playSound(player, Sound.BLOCK_NOTE_BLOCK_GUITAR, 0.8F, 1.25F);
+                reOpen(player, contents);
+            });
         }));
     }
 }

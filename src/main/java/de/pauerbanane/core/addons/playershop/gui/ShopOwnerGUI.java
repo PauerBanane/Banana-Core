@@ -1,17 +1,19 @@
 package de.pauerbanane.core.addons.playershop.gui;
 
-import de.pauerbanane.api.anvilgui.AnvilGUI;
+import de.pauerbanane.api.chatinput.ChatInput;
 import de.pauerbanane.api.smartInventory.ClickableItem;
 import de.pauerbanane.api.smartInventory.SmartInventory;
 import de.pauerbanane.api.smartInventory.content.InventoryContents;
 import de.pauerbanane.api.smartInventory.content.InventoryProvider;
 import de.pauerbanane.api.smartInventory.content.SlotIterator;
 import de.pauerbanane.api.smartInventory.content.SlotPos;
+import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.ItemBuilder;
 import de.pauerbanane.api.util.UtilMath;
 import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.addons.playershop.Shop;
 import de.pauerbanane.core.addons.playershop.ShopContent;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -39,38 +41,30 @@ public class ShopOwnerGUI implements InventoryProvider {
                 .build(), click -> {
             Economy eco = BananaCore.getEconomy();
             if (click.getClick() == ClickType.LEFT) {
-                new AnvilGUI.Builder()
-                        .onComplete((p, t) -> {
-                            if(UtilMath.isDouble(t) && Double.parseDouble(t) > 0) {
-                                double withdraw = Double.parseDouble(t);
-                                if(this.shop.getBalance() >= withdraw) {
-                                    eco.depositPlayer(player, withdraw);
-                                    this.shop.withdrawBalance(withdraw);
-                                    return AnvilGUI.Response.close();
-                                }
-                                return AnvilGUI.Response.text("§cNicht genügend Geld");
-                            }
-                            return AnvilGUI.Response.text("§cUngültige Eingabe");
-                        })
-                        .title("§eGeld abheben")
-                        .plugin(BananaCore.getInstance())
-                        .open(player);
+                new ChatInput(player, "Gebe einen Betrag ein:", t -> {
+                    if(UtilMath.isDouble(t) && Double.parseDouble(t) > 0) {
+                        double withdraw = Double.parseDouble(t);
+                        if(this.shop.getBalance() >= withdraw) {
+                            eco.depositPlayer(player, withdraw);
+                            this.shop.withdrawBalance(withdraw);
+                            player.sendActionBar(F.main("Shop", "Du hast §e" + withdraw + " " + eco.currencyNamePlural() + " §7abgehoben."));
+                        } else
+                            player.sendActionBar(F.error("Shop", "Der Shop hat nicht genügend Geld."));
+                    } else
+                        player.sendActionBar(F.error("Shop", "Ungültige Eingabe."));
+                });
             } else if (click.getClick() == ClickType.RIGHT) {
-                new AnvilGUI.Builder()
-                        .onComplete((p, t) -> {
-                            if(UtilMath.isDouble(t) && Double.parseDouble(t) > 0) {
-                                double deposit = Double.parseDouble(t);
-                                if(eco.withdrawPlayer(player, deposit).transactionSuccess()) {
-                                    this.shop.depositBalance(deposit);
-                                    return AnvilGUI.Response.close();
-                                }
-                                return AnvilGUI.Response.text("§cNicht genügend Geld");
-                            }
-                            return AnvilGUI.Response.text("§cUngültige Eingabe");
-                        })
-                        .title("§eGeld einzahlen")
-                        .plugin(BananaCore.getInstance())
-                        .open(player);
+                new ChatInput(player, "Gebe einen Betrag ein:", t -> {
+                    if(UtilMath.isDouble(t) && Double.parseDouble(t) > 0) {
+                        double deposit = Double.parseDouble(t);
+                        if(eco.withdrawPlayer(player, deposit).transactionSuccess()) {
+                            this.shop.depositBalance(deposit);
+                            player.sendActionBar(F.main("Shop", "Du hast §e" + deposit + " " + eco.currencyNamePlural() + " §7eingezahlt."));
+                        } else
+                            player.sendActionBar(F.error("Shop", "Du hast nicht genügend Geld."));
+                    } else
+                        player.sendActionBar(F.error("Shop", "Ungültige Eingabe."));
+                });
             }
         }));
         contents.set(4, ClickableItem.of((new ItemBuilder(Material.NAME_TAG))
@@ -79,15 +73,9 @@ public class ShopOwnerGUI implements InventoryProvider {
                 .lore("§fHier kannst du den §aNamen des")
                 .lore("§aShops §fändern.")
                 .build(), click -> {
-            new AnvilGUI.Builder()
-                    .onComplete((p, t) -> {
-                        shop.setShopName(t);
-                        return AnvilGUI.Response.close();
-                    })
-                    .title("§eShop-Name eingeben")
-                    .text("")
-                    .plugin(BananaCore.getInstance())
-                    .open(player);
+            new ChatInput(player, "§aShop-Namen eingeben:", t -> {
+                shop.setShopName(t);
+            });
         }));
         contents.set(6, ClickableItem.of((new ItemBuilder(Material.VILLAGER_SPAWN_EGG))
                 .name("§fAussehen: §e" +  this.shop.getProfession().getKey().getKey().toString())

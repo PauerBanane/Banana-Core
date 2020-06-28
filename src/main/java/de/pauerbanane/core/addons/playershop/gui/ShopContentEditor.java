@@ -1,10 +1,11 @@
 package de.pauerbanane.core.addons.playershop.gui;
 
-import de.pauerbanane.api.anvilgui.AnvilGUI;
+import de.pauerbanane.api.chatinput.ChatInput;
 import de.pauerbanane.api.smartInventory.ClickableItem;
 import de.pauerbanane.api.smartInventory.content.InventoryContents;
 import de.pauerbanane.api.smartInventory.content.InventoryProvider;
 import de.pauerbanane.api.smartInventory.content.SlotPos;
+import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.ItemBuilder;
 import de.pauerbanane.api.util.UtilMath;
 import de.pauerbanane.core.BananaCore;
@@ -27,19 +28,13 @@ public class ShopContentEditor implements InventoryProvider {
     public void init(Player player, InventoryContents contents) {
         contents.set(4, ClickableItem.empty(this.content.getItem().clone()));
         contents.set(SlotPos.of(1, 0), ClickableItem.of((new ItemBuilder(Material.GOLD_INGOT)).name("§2Verkaufspreis setzen").build(), click -> {
-            new AnvilGUI.Builder()
-                    .onComplete((p, t) -> {
-                        if(UtilMath.isDouble(t) && Double.parseDouble(t) > 0) {
-                            double price = Double.parseDouble(t);
-                            this.content.setSellPrice(price);
-                            return AnvilGUI.Response.close();
-                        } else
-                            return AnvilGUI.Response.text("§cUngültige Eingabe");
-                    })
-                    .title("§eVerkaufspreis eingeben")
-                    .text("")
-                    .plugin(BananaCore.getInstance())
-                    .open(player);
+            new ChatInput(player, "Gib einen Betrag ein:", t -> {
+                if(UtilMath.isDouble(t) && Double.parseDouble(t) > 0) {
+                    double price = Double.parseDouble(t);
+                    this.content.setSellPrice(price);
+                } else
+                    player.sendActionBar(F.error("Shop", "Ungültige Eingabe."));
+            });
         }));
         String sellEnabled = "§4Deaktiviert";
         if (this.content.isSellEnabled())
@@ -49,19 +44,13 @@ public class ShopContentEditor implements InventoryProvider {
             reOpen(player, contents);
         }));
         contents.set(SlotPos.of(1, 1), ClickableItem.of((new ItemBuilder(Material.GOLD_INGOT)).name("§2Ankaufspreis setzen").build(), click -> {
-            new AnvilGUI.Builder()
-                    .onComplete((p, t) -> {
-                        if(UtilMath.isDouble(t) && Double.parseDouble(t) > 0) {
-                            double price = Double.parseDouble(t);
-                            this.content.setPurchasePrice(price);
-                            return AnvilGUI.Response.close();
-                        } else
-                            return AnvilGUI.Response.text("§cUngültige Eingabe");
-                    })
-                    .title("§eAnkaufspreis eingeben")
-                    .text("")
-                    .plugin(BananaCore.getInstance())
-                    .open(player);
+            new ChatInput(player, "Gib einen Betrag ein:", t -> {
+                if(UtilMath.isDouble(t) && Double.parseDouble(t) > 0) {
+                    double price = Double.parseDouble(t);
+                    this.content.setPurchasePrice(price);
+                } else
+                    player.sendActionBar(F.error("Shop", "Ungültige Eingabe."));
+            });
         }));
         String enabled = "§4Deaktiviert";
         if (this.content.isPurchaseEnabled())
