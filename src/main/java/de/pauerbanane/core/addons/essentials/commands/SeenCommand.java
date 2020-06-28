@@ -3,9 +3,9 @@ package de.pauerbanane.core.addons.essentials.commands;
 import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.annotation.CommandAlias;
 import de.pauerbanane.acf.annotation.Default;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.UtilTime;
-import de.pauerbanane.core.addons.Addon;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 

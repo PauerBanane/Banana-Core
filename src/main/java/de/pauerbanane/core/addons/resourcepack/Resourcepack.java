@@ -1,7 +1,7 @@
 package de.pauerbanane.core.addons.resourcepack;
 
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.FileLoader;
-import de.pauerbanane.core.addons.Addon;
 
 import java.io.File;
 
@@ -21,9 +21,14 @@ public class Resourcepack extends Addon {
 
     }
 
+    @Override
+    public void onReload() {
+
+    }
+
 
     public FileLoader getResourcepackConfig() {
-        return new FileLoader(plugin.getDataFolder().getPath() + File.separator + "Resourcepack/config.yml");
+        return new FileLoader(plugin.getDataFolder(), "Resourcepack/config.yml");
     }
 
     public String getResourcepackHttpServerAddress() {

@@ -1,8 +1,8 @@
 package de.pauerbanane.core.addons.chairs;
 
 import com.google.common.collect.Maps;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.F;
-import de.pauerbanane.core.addons.Addon;
 import de.pauerbanane.core.addons.chairs.commands.SitCommand;
 import de.pauerbanane.core.addons.chairs.events.SitEvent;
 import de.pauerbanane.core.addons.chairs.events.UnsitEvent;
@@ -40,6 +40,11 @@ public class Chairs extends Addon {
     public void onDisable() {
         for(UUID id : registeredChairs.keySet())
             toggleSit(Bukkit.getPlayer(id), null);
+    }
+
+    @Override
+    public void onReload() {
+
     }
 
     public void toggleSit(Player player, Block block) {

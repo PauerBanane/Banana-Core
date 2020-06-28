@@ -4,10 +4,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.FileLoader;
 import de.pauerbanane.core.BananaCore;
-import de.pauerbanane.core.addons.Addon;
 import de.pauerbanane.core.addons.lobby.server.ServerInterfaceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class Lobby extends Addon implements Listener {
 
     @Override
     public void onEnable() {
-        if(!plugin.getServerName().equalsIgnoreCase("Lobby")) {
+        if(!BananaCore.getInstance().getServerName().equalsIgnoreCase("Lobby")) {
             plugin.getLogger().severe("Failed to load Lobby-Addon - Servername is not set to 'Lobby'");
             return;
         }
@@ -60,8 +60,13 @@ public class Lobby extends Addon implements Listener {
         config.save();
     }
 
+    @Override
+    public void onReload() {
+
+    }
+
     private void loadConfig() {
-        config = new FileLoader(getAddonFolder() + "Rules.yml");
+        config = new FileLoader(getAddonFolder(), "Rules.yml");
 
         if(!config.isSet("firstJoinMessage")) {
             config.set("firstJoinMessage", "§dWillkommen auf KnicksCraft §e%player%§d!");

@@ -1,7 +1,7 @@
 package de.pauerbanane.core.addons.beds;
 
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.F;
-import de.pauerbanane.core.addons.Addon;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -22,6 +22,11 @@ public class Beds extends Addon implements Listener {
 
     @Override
     public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
 
     }
 

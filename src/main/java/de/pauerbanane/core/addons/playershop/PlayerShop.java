@@ -2,7 +2,7 @@ package de.pauerbanane.core.addons.playershop;
 
 import com.google.common.collect.ImmutableList;
 import de.pauerbanane.acf.InvalidCommandArgument;
-import de.pauerbanane.core.addons.Addon;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.core.addons.playershop.listener.ShopListener;
 import de.pauerbanane.core.addons.playershop.oldContent.PlayerShopAttachment;
 import de.pauerbanane.core.addons.playershop.oldContent.ShopStorageManager;
@@ -44,6 +44,11 @@ public class PlayerShop extends Addon {
     @Override
     public void onDisable() {
         manager.saveAllShops();
+    }
+
+    @Override
+    public void onReload() {
+
     }
 
     private void commandSetup() {

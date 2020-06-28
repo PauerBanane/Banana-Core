@@ -3,6 +3,8 @@ package de.pauerbanane.core.addons.ultrahardcore.listener;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import de.pauerbanane.core.addons.ultrahardcore.UltraHardcore;
+import de.pauerbanane.core.addons.ultrahardcore.data.UHCData;
+import de.pauerbanane.core.data.CorePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -54,9 +56,18 @@ public class UHCListener implements Listener {
         sendChatMessage(player, "§e" + player.getName() + " §7ist im §aUltra-Hardcore-Event §7gestorben.");
 
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement revoke " + player.getName() + " everything");
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "co rollback user:PauerBanane time:1000w");
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "co rollback user:PauerBanane time:10000w");
 
         player.sendMessage("Du bist §cgestorben§f.\nDeine §eFortschritte §f werden zurückgesetzt...");
+
+        UHCData data = CorePlayer.get(e.getEntity().getUniqueId()).getData(UHCData.class);
+        if(data.getLifes() <= 1) {
+            data.setLifes(0);
+            player.kickPlayer("§fDu bist aus dem §eUltra-Hardcore-Event §fausgeschieden.\n§fVielen Dank für deine Teilname! §a:)");
+        } else {
+            data.setLifes(data.getLifes() - 1);
+            player.sendMessage("§eDu besitzt noch §a" + data.getLifes() + " §eLeben.");
+        }
     }
 
     @EventHandler

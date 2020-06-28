@@ -7,9 +7,9 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import de.pauerbanane.acf.InvalidCommandArgument;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.UtilPlayer;
-import de.pauerbanane.core.addons.Addon;
 import de.pauerbanane.core.addons.chestlock.commands.ChestLockCommand;
 import de.pauerbanane.core.addons.chestlock.commands.ChestUnlockCommand;
 import org.bukkit.*;
@@ -49,9 +49,9 @@ public class ChestLock extends Addon implements Listener {
 
     @Override
     public void onEnable() {
-        lockID = new NamespacedKey(getPlugin(), "jsonLock");
+        lockID = new NamespacedKey(plugin, "jsonLock");
 
-        chests = new MaterialSetTag(new NamespacedKey(getPlugin(), "protectedChests"),
+        chests = new MaterialSetTag(new NamespacedKey(plugin, "protectedChests"),
                 Material.CHEST,
                 Material.TRAPPED_CHEST,
                 Material.FURNACE,
@@ -99,7 +99,7 @@ public class ChestLock extends Addon implements Listener {
         registerCommand(new ChestLockCommand(this));
         registerCommand(new ChestUnlockCommand(this));
 
-        Bukkit.getPluginManager().registerEvents(this, getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, plugin);
 
         //Fill Cache Map with all world IDs
         for (final World world : Bukkit.getWorlds()) {
@@ -107,11 +107,16 @@ public class ChestLock extends Addon implements Listener {
         }
 
         //Clean Cache every 30 Minutes
-        Bukkit.getScheduler().runTaskTimer(getPlugin(), () -> cache.values().forEach(Cache::cleanUp), 36000, 36000);
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> cache.values().forEach(Cache::cleanUp), 36000, 36000);
     }
 
     @Override
     public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
 
     }
 

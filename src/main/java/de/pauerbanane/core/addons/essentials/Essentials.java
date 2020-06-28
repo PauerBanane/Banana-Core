@@ -1,7 +1,7 @@
 package de.pauerbanane.core.addons.essentials;
 
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.FileLoader;
-import de.pauerbanane.core.addons.Addon;
 import de.pauerbanane.core.addons.essentials.commands.*;
 import de.pauerbanane.core.addons.essentials.commands.spawn.SetspawnCommand;
 import de.pauerbanane.core.addons.essentials.commands.spawn.SpawnCommand;
@@ -14,13 +14,15 @@ import de.pauerbanane.core.addons.essentials.commands.teleport.home.HomeCommand;
 import de.pauerbanane.core.addons.essentials.commands.teleport.home.SethomeCommand;
 import de.pauerbanane.core.addons.essentials.commands.tpa.TeleportRequestManager;
 
+import java.io.File;
+
 public class Essentials extends Addon {
 
     private FileLoader config;
 
     @Override
     public void onEnable() {
-        this.config = new FileLoader(getAddonFolder() + "Essentials.yml");
+        this.config = new FileLoader(getAddonFolder(), "Essentials.yml");
 
         new TeleportRequestManager(this);
 
@@ -64,6 +66,11 @@ public class Essentials extends Addon {
 
     @Override
     public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
 
     }
 

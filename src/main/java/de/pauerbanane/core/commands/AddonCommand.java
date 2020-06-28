@@ -2,9 +2,9 @@ package de.pauerbanane.core.commands;
 
 import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.annotation.*;
+import de.pauerbanane.api.addons.Addon;
+import de.pauerbanane.api.addons.AddonManager;
 import de.pauerbanane.api.util.F;
-import de.pauerbanane.core.addons.Addon;
-import de.pauerbanane.core.addons.AddonManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 

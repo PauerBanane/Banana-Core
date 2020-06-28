@@ -14,7 +14,7 @@ public class SetspawnCommand extends BaseCommand {
 
     @Default
     public void setspawn(Player sender) {
-        new FileLoader("plugins/Banana-Core/Addons/spawn.yml").saveLocation("spawn", sender.getLocation());
+        new FileLoader("plugins/Banana-Core/Addons", "spawn.yml").saveLocation("spawn", sender.getLocation());
         sender.getWorld().setSpawnLocation(sender.getLocation());
         sender.sendMessage(F.main("Spawn", "Du hast den Spawn neu gesetzt."));
     }

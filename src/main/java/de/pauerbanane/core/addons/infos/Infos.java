@@ -1,9 +1,9 @@
 package de.pauerbanane.core.addons.infos;
 
 import com.google.common.collect.Lists;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.FileLoader;
 import de.pauerbanane.api.util.UtilFile;
-import de.pauerbanane.core.addons.Addon;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -36,12 +36,17 @@ public class Infos extends Addon implements Runnable {
 
     }
 
+    @Override
+    public void onReload() {
+
+    }
+
     private void loadConfig() {
         File file = new File(getAddonFolder() + "Infos.yml");
         if (!file.exists())
             UtilFile.copyResource(plugin.getResource("Infos.yml"), file);
 
-        this.config = new FileLoader(getAddonFolder() + "Infos.yml");
+        this.config = new FileLoader(getAddonFolder(), "Infos.yml");
 
         this.messages = Lists.newArrayList();
         for (String info : config.getKeys(false)) {

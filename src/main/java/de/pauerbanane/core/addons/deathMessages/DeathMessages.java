@@ -1,9 +1,9 @@
 package de.pauerbanane.core.addons.deathMessages;
 
 import com.google.common.collect.Maps;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.FileLoader;
 import de.pauerbanane.api.util.UtilFile;
-import de.pauerbanane.core.addons.Addon;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -33,8 +33,8 @@ public class DeathMessages extends Addon implements Listener {
     public void onEnable() {
         this.entityType = Maps.newHashMap();
         this.damageCause = Maps.newHashMap();
-        UtilFile.copyResource(plugin.getResource("DeathMessages.yml"), new File(plugin.getAddonFolder(), "DeathMessages.yml"));
-        this.config = new FileLoader(plugin.getAddonFolder() + "DeathMessages.yml");
+        UtilFile.copyResource(plugin.getResource("DeathMessages.yml"), new File(getAddonFolder(), "DeathMessages.yml"));
+        this.config = new FileLoader(getAddonFolder(), "DeathMessages.yml");
 
         initConfig();
         registerListener(this);
@@ -42,6 +42,11 @@ public class DeathMessages extends Addon implements Listener {
 
     @Override
     public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
 
     }
 

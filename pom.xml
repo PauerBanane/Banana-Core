@@ -24,9 +24,10 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
-        </repository><repository>
-        <id>everything</id>
-        <url>http://repo.citizensnpcs.co/</url>
+        </repository>
+        <repository>
+            <id>everything</id>
+            <url>http://repo.citizensnpcs.co/</url>
         </repository>
         <repository>
             <id>jackson</id>
@@ -38,7 +39,7 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- CraftBukkit API -->
@@ -52,6 +53,7 @@
             <groupId>de.pauerbanane</groupId>
             <artifactId>Banana-API</artifactId>
             <version>1.1.1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.luckperms</groupId>
@@ -68,7 +70,7 @@
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
+            <version>LATEST</version>
             <scope>provided</scope>
         </dependency><dependency>
             <groupId>net.citizensnpcs</groupId>
@@ -76,13 +78,6 @@
             <version>2.0.20-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.neznamy</groupId>
-            <artifactId>TAB</artifactId>
-            <scope>system</scope>
-            <version>1.0</version>
-            <systemPath>${basedir}\src\lib\TAB v2.7.3.jar</systemPath>
         </dependency>
     </dependencies>
 

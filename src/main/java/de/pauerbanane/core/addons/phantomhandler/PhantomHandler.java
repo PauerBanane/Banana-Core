@@ -1,7 +1,7 @@
 package de.pauerbanane.core.addons.phantomhandler;
 
 import com.destroystokyo.paper.event.entity.PhantomPreSpawnEvent;
-import de.pauerbanane.core.addons.Addon;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.core.addons.settings.data.Settings;
 import de.pauerbanane.core.data.CorePlayer;
 import org.bukkit.entity.Player;
@@ -18,6 +18,11 @@ public class PhantomHandler extends Addon implements Listener {
 
     @Override
     public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
 
     }
 

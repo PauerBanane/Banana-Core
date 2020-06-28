@@ -31,7 +31,7 @@ public class ServerInterfaceManager implements Listener {
 
     public ServerInterfaceManager(Lobby addon) {
         this.addon = addon;
-        this.config = new FileLoader(addon.getAddonFolder() + "Lobby.yml");
+        this.config = new FileLoader(addon.getAddonFolder(), "Lobby.yml");
         this.servers = Lists.newArrayList();
         this.serverInterfaceItemName = "§7>§6> §e§lServer auswählen";
         this.serverInterfaceItem = new ItemBuilder(Material.COMPASS).name(serverInterfaceItemName).build();

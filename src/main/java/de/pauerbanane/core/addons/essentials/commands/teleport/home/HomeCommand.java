@@ -84,7 +84,7 @@ public class HomeCommand extends BaseCommand {
         for(int i = 0; i < data.length; i++) {
             File f = data[i];
             if(!f.getName().contains("players") && UUID.fromString(f.getName().replace(".yml", "")) != null) {
-                FileLoader config = new FileLoader(f.getPath());
+                FileLoader config = new FileLoader(f.getParentFile(), f.getName());
                 ConfigurationSection section = config.getConfigurationSection("homes");
                 if (section != null && section.getKeys(false).size() > 0) {
                     for (String home : section.getKeys(false)) {

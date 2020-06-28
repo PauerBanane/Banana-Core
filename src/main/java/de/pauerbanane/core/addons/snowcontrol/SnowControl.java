@@ -1,8 +1,8 @@
 package de.pauerbanane.core.addons.snowcontrol;
 
 import com.google.common.collect.Lists;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.FileLoader;
-import de.pauerbanane.core.addons.Addon;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,8 +30,13 @@ public class SnowControl extends Addon implements Listener {
 
     }
 
+    @Override
+    public void onReload() {
+
+    }
+
     private void initConfig() {
-        FileLoader config = new FileLoader(getAddonFolder() + "SnowControl.yml");
+        FileLoader config = new FileLoader(getAddonFolder(), "SnowControl.yml");
         if(!config.isSet("disabledBlocks")) {
             config.set("disabledBlocks", Lists.newArrayList("GRAVEL"));
             config.save();

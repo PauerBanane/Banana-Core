@@ -1,7 +1,7 @@
 package de.pauerbanane.core.addons.schematicbrowser;
 
 import com.sk89q.worldedit.WorldEdit;
-import de.pauerbanane.core.addons.Addon;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.core.addons.schematicbrowser.commands.SchematicBrowserCommand;
 
 import java.io.File;
@@ -32,6 +32,11 @@ public class SchematicBrowser extends Addon {
 
     @Override
     public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
 
     }
 

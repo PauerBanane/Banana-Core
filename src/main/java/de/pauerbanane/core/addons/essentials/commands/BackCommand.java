@@ -5,8 +5,8 @@ import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.annotation.CommandAlias;
 import de.pauerbanane.acf.annotation.CommandPermission;
 import de.pauerbanane.acf.annotation.Default;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.F;
-import de.pauerbanane.core.addons.Addon;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import sun.jvm.hotspot.ui.ObjectHistogramPanel;
 
 import java.util.HashMap;
 import java.util.UUID;

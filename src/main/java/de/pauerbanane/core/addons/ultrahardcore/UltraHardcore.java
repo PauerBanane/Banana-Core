@@ -1,7 +1,10 @@
 package de.pauerbanane.core.addons.ultrahardcore;
 
-import de.pauerbanane.core.addons.Addon;
-import de.pauerbanane.core.addons.ultrahardcore.commands.TopTenCommand;
+import de.pauerbanane.api.addons.Addon;
+import de.pauerbanane.api.util.FileLoader;
+import de.pauerbanane.core.BananaCore;
+import de.pauerbanane.core.addons.ultrahardcore.commands.UHCCommand;
+import de.pauerbanane.core.addons.ultrahardcore.data.UHCData;
 import de.pauerbanane.core.addons.ultrahardcore.listener.UHCListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,18 +17,28 @@ import java.util.Iterator;
 
 public class UltraHardcore extends Addon {
 
+    private static FileLoader config;
+
     @Override
     public void onEnable() {
+        this.config = new FileLoader(getAddonFolder(), "Advancements.yml");
         registerListener(new UHCListener(this));
 
         disableRecipes();
         createRecipes();
 
-        registerCommand(new TopTenCommand());
+        BananaCore.getInstance().getPlayerDataManager().registerPlayerData(plugin, UHCData.class);
+
+        registerCommand(new UHCCommand());
     }
 
     @Override
     public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
 
     }
 
@@ -34,7 +47,8 @@ public class UltraHardcore extends Addon {
         while(it.hasNext()) {
             Recipe r = it.next();
             if(r.getResult().getType() == Material.GOLDEN_APPLE ||
-               r.getResult().getType() == Material.GLISTERING_MELON_SLICE) {
+               r.getResult().getType() == Material.GLISTERING_MELON_SLICE ||
+               r.getResult().getType() == Material.SUSPICIOUS_STEW) {
                 it.remove();
             }
         }
@@ -50,7 +64,7 @@ public class UltraHardcore extends Addon {
         Bukkit.addRecipe(recipe);
     }
 
-
-
-
+    public static FileLoader getConfig() {
+        return config;
+    }
 }

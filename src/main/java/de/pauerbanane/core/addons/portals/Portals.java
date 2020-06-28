@@ -3,7 +3,7 @@ package de.pauerbanane.core.addons.portals;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import de.pauerbanane.acf.InvalidCommandArgument;
-import de.pauerbanane.core.addons.Addon;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.core.addons.portals.commands.PortalCommand;
 import de.pauerbanane.core.addons.portals.listener.PortalEnterListener;
 import org.bukkit.World;
@@ -132,6 +132,11 @@ public class Portals extends Addon {
     @Override
     public void onDisable() {
         save();
+    }
+
+    @Override
+    public void onReload() {
+
     }
 
     public HashMap<String, Portal> getPortals() {

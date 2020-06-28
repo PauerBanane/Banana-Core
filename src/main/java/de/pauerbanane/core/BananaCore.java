@@ -3,9 +3,9 @@ package de.pauerbanane.core;
 import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.PaperCommandManager;
 import de.pauerbanane.api.BananaAPI;
+import de.pauerbanane.api.addons.AddonManager;
 import de.pauerbanane.api.data.PlayerDataManager;
 import de.pauerbanane.api.scoreboards.ScoreboardAPI;
-import de.pauerbanane.core.addons.AddonManager;
 import de.pauerbanane.core.addons.afk.AFK;
 import de.pauerbanane.core.addons.beds.Beds;
 import de.pauerbanane.core.addons.chairs.Chairs;
@@ -26,7 +26,6 @@ import de.pauerbanane.core.addons.schematicbrowser.SchematicBrowser;
 import de.pauerbanane.core.addons.settings.PlayerSettings;
 import de.pauerbanane.core.addons.settings.data.Settings;
 import de.pauerbanane.core.addons.snowcontrol.SnowControl;
-import de.pauerbanane.core.addons.tab.Tab;
 import de.pauerbanane.core.addons.ultrahardcore.UltraHardcore;
 import de.pauerbanane.core.commands.AddonCommand;
 import de.pauerbanane.core.commands.CheckPermissionCommand;
@@ -90,7 +89,7 @@ public class BananaCore extends JavaPlugin {
         this.playerDataManager = PlayerDataManager.getInstance();
         this.permissionManager = new PermissionManager(this);
         this.pluginManager = Bukkit.getPluginManager();
-        this.addonManager = new AddonManager(this);
+        this.addonManager = new AddonManager(this, commandManager);
         this.commandSetup = new CommandSetup(this);
         this.playerDataLoader = new PlayerDataLoader(this);
 
@@ -163,7 +162,6 @@ public class BananaCore extends JavaPlugin {
         addonManager.registerAddon(new SchematicBrowser(), "SchematicBrowser");
         addonManager.registerAddon(new PlayerShop(), "Shops");
         addonManager.registerAddon(new SnowControl(), "SnowControl");
-        addonManager.registerAddon(new Tab(), "Tab");
         addonManager.registerAddon(new DeathMessages(), "Todesnachrichten");
         addonManager.registerAddon(new UltraHardcore(), "Ultra-Hardcore");
     }

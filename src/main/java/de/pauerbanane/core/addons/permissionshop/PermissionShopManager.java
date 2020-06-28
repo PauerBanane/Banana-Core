@@ -3,6 +3,7 @@ package de.pauerbanane.core.addons.permissionshop;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import de.pauerbanane.api.util.FileLoader;
+import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.data.PermissionManager;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.MetaNode;
@@ -40,7 +41,7 @@ public class PermissionShopManager {
             List<String> lore = section.getStringList("lore");
             String condition = section.getString("condition");
             List<String> permissions = section.getStringList("permissions");
-            String server = section.getString("server", addon.getPlugin().getServerName());
+            String server = section.getString("server", BananaCore.getInstance().getServerName());
             String world = section.getString("world", "global");
             double price = section.getDouble("price");
             List<Node> permissionNodes = Lists.newArrayList();

@@ -2,8 +2,8 @@ package de.pauerbanane.core.addons.chat;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.UtilPlayer;
-import de.pauerbanane.core.addons.Addon;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -28,6 +28,11 @@ public class PluginMessageChat extends Addon implements Listener {
     @Override
     public void onDisable() {
         Bukkit.getMessenger().unregisterOutgoingPluginChannel(plugin, channel);
+    }
+
+    @Override
+    public void onReload() {
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

@@ -13,7 +13,7 @@ public class SpawnCommand extends BaseCommand {
 
     @Default
     public void spawn(Player sender) {
-        Location spawn = new FileLoader("plugins/Banana-Core/Addons/spawn.yml").getLocation("spawn");
+        Location spawn = new FileLoader("plugins/Banana-Core/Addons", "spawn.yml").getLocation("spawn");
         if(spawn == null) {
             sender.sendMessage(F.error("Spawn", "Es wurde noch kein Spawnpunkt festgelegt."));
             return;

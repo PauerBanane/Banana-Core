@@ -3,12 +3,12 @@ package de.pauerbanane.core.addons.plotshop;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import de.pauerbanane.acf.InvalidCommandArgument;
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.regionevents.RegionEnterEvent;
 import de.pauerbanane.api.regionevents.RegionLeaveEvent;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.FileLoader;
 import de.pauerbanane.core.BananaCore;
-import de.pauerbanane.core.addons.Addon;
 import de.pauerbanane.core.addons.plotshop.commands.PlotAdminCommand;
 import de.pauerbanane.core.addons.plotshop.commands.PlotUserCommand;
 import de.pauerbanane.core.addons.plotshop.listener.ExpireListener;
@@ -48,7 +48,7 @@ public class PlotShop extends Addon implements Listener {
         this.tempReRentCache = Maps.newHashMap();
         this.reRentCache = Maps.newHashMap();
         ConfigurationSerialization.registerClass(Plot.class, "plot");
-        this.plotGroupConfig = new FileLoader(getAddonFolder() + "PlotGroups.yml");
+        this.plotGroupConfig = new FileLoader(getAddonFolder(), "PlotGroups.yml");
         this.manager = new PlotManager(this);
 
         manager.load();
@@ -63,6 +63,11 @@ public class PlotShop extends Addon implements Listener {
 
     @Override
     public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
 
     }
 

@@ -1,9 +1,9 @@
 package de.pauerbanane.core.addons.afk;
 
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.UtilTime;
 import de.pauerbanane.core.BananaCore;
-import de.pauerbanane.core.addons.Addon;
 import de.pauerbanane.core.addons.afk.commands.AFKCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,6 +41,11 @@ public class AFK extends Addon implements Runnable, Listener {
 
     @Override
     public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
 
     }
 

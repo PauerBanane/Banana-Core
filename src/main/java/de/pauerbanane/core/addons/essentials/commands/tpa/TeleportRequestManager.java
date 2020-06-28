@@ -11,9 +11,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.UtilPlayer;
-import de.pauerbanane.core.addons.Addon;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
