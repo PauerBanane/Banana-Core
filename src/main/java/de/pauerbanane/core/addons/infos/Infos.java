@@ -42,7 +42,7 @@ public class Infos extends Addon implements Runnable {
     }
 
     private void loadConfig() {
-        File file = new File(getAddonFolder() + "Infos.yml");
+        File file = new File(getAddonFolder(), "Infos.yml");
         if (!file.exists())
             UtilFile.copyResource(plugin.getResource("Infos.yml"), file);
 

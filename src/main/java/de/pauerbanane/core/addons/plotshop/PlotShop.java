@@ -88,8 +88,9 @@ public class PlotShop extends Addon implements Listener {
         if(plot.getOwner() != null && plot.getOwner().equals(player.getUniqueId()) && plot.isRentable())
             tempReRentCache.put(player.getUniqueId(), plot);
 
-        if(plot.getOwner() != null)
+        if(plot.getOwner() != null) {
             BananaCore.getScoreboardAPI().getBoardManager().setBoard(e.getPlayer(), new PurchasedPlotBoard(plot));
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

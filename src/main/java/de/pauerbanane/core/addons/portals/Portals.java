@@ -24,7 +24,7 @@ public class Portals extends Addon {
 
     @Override
     public void onEnable() {
-        this.file = new File(getAddonFolder() + "Portals.yml");
+        this.file = new File(getAddonFolder(), "Portals.yml");
         if(!file.exists()) {
             file.getParentFile().mkdirs();
             try {

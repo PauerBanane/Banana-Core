@@ -13,7 +13,6 @@ import de.pauerbanane.api.util.UtilMath;
 import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.addons.playershop.Shop;
 import de.pauerbanane.core.addons.playershop.ShopContent;
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

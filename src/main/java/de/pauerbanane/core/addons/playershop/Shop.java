@@ -130,7 +130,10 @@ public class Shop implements ConfigurationSerializable {
         if(owner != null)
             this.active = true;
         Entity ent = this.location.getWorld().getEntity(this.entity);
+        System.out.println("Entitiy: " + entity.toString());
+        this.location.getWorld().getEntity(entity);
         if (ent == null) {
+            System.out.println("Villger == null");
             Bukkit.getLogger().severe("Shop-Villager konnte nicht gefunden werden...");
             ent = spawnEntity();
         }
@@ -152,7 +155,16 @@ public class Shop implements ConfigurationSerializable {
     }
 
     public Villager spawnEntity() {
+        Bukkit.getLogger().warning("Respawning Villager for shop " + getPlotRegion());
         World world = this.location.getWorld();
+        Collection<Villager> entities = this.location.getNearbyEntitiesByType(Villager.class, 1);
+        Bukkit.getLogger().warning("Found " + entities.size() + " Villagers nearby shop " + getPlotRegion());
+        if(!entities.isEmpty()) {
+            entities.forEach(vill -> {
+                if(vill.getUniqueId() != this.entity)
+                    vill.remove();
+            });
+        }
         Villager villager = (Villager)world.spawnEntity(this.location, EntityType.VILLAGER);
         villager.setAI(false);
         villager.setInvulnerable(true);
