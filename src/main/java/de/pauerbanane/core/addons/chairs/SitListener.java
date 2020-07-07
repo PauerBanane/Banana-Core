@@ -3,7 +3,9 @@ package de.pauerbanane.core.addons.chairs;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.core.addons.settings.data.Settings;
 import de.pauerbanane.core.data.CorePlayer;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,6 +31,9 @@ public class SitListener implements Listener {
         if(e.getPlayer().getInventory().getItemInMainHand() != null && e.getPlayer().getInventory().getItemInMainHand().getType() != Material.AIR) return;
         if(!(e.getClickedBlock().getBlockData() instanceof Stairs)) return;
         if(e.getPlayer().isSneaking()) return;
+        if(((Stairs) e.getClickedBlock().getBlockData()).getHalf() == Bisected.Half.TOP) return;
+        Location above = e.getClickedBlock().getLocation().clone().add(0,1,0);
+        if(above.getBlock() == null || !above.getBlock().isPassable()) return;
 
         CorePlayer cp = CorePlayer.get(e.getPlayer().getUniqueId());
         Settings settings = cp.getData(Settings.class);
