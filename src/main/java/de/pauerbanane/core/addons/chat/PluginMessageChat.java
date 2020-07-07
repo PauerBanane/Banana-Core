@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.UtilPlayer;
+import de.pauerbanane.core.BananaCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -23,6 +24,7 @@ public class PluginMessageChat extends Addon implements Listener {
         Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, channel);
 
         registerListener(this);
+        registerListener(new SignListener((BananaCore) plugin));
     }
 
     @Override
