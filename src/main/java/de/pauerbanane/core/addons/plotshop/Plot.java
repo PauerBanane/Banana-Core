@@ -109,7 +109,6 @@ public class Plot implements ConfigurationSerializable {
             BananaCore.getInstance().getLogger().warning("Failed to load Plot " + id + "! The defined group is not longer valid!");
             return null;
         }
-        System.out.println(id);
         ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world)).getRegion(id);
         Plot plot = new Plot(id, region, world, group);
         plot.setPrice((Double) args.get("price"));

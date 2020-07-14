@@ -11,6 +11,7 @@ import de.pauerbanane.api.util.FileLoader;
 import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.addons.plotshop.commands.PlotAdminCommand;
 import de.pauerbanane.core.addons.plotshop.commands.PlotUserCommand;
+import de.pauerbanane.core.addons.plotshop.dynmap.DynmapManager;
 import de.pauerbanane.core.addons.plotshop.listener.ExpireListener;
 import de.pauerbanane.core.addons.plotshop.scoreboard.PlotBoard;
 import de.pauerbanane.core.addons.plotshop.scoreboard.PurchasedPlotBoard;
@@ -41,6 +42,8 @@ public class PlotShop extends Addon implements Listener {
 
     private HashMap<UUID, Plot> reRentCache;
 
+    private DynmapManager dynmapManager;
+
     @Override
     public void onEnable() {
         this.instance = this;
@@ -51,8 +54,14 @@ public class PlotShop extends Addon implements Listener {
         this.plotGroupConfig = new FileLoader(getAddonFolder(), "PlotGroups.yml");
         this.manager = new PlotManager(this);
 
+        if(BananaCore.getInstance().hasDynmapSupport())
+            this.dynmapManager = new DynmapManager(this);
+
         manager.load();
         Bukkit.getScheduler().runTaskTimer(plugin, new ExpireListener(this), 100L, 600L);
+
+        if(BananaCore.getInstance().hasDynmapSupport())
+            dynmapManager.loadPlots();
 
         registerCommandContext();
         registerCommand(new PlotUserCommand(this));
