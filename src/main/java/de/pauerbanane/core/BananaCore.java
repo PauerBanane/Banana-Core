@@ -41,6 +41,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.dynmap.DynmapCommonAPI;
 
 import java.util.Locale;
 
@@ -54,6 +55,8 @@ public class BananaCore extends JavaPlugin {
 
     private static String rootFolder,
                           addonFolder;
+
+    private static DynmapCommonAPI dynmapAPI;
 
     private static ScoreboardAPI scoreboardAPI;
 
@@ -107,6 +110,8 @@ public class BananaCore extends JavaPlugin {
             return;
         }
 
+        setupDynmap();
+
         playerDataLoader.loadOnlinePlayers();
 
         registerAddons();
@@ -134,6 +139,19 @@ public class BananaCore extends JavaPlugin {
 
         economy = rsp.getProvider();
         return economy != null;
+    }
+
+    private boolean setupDynmap() {
+        dynmapAPI = (DynmapCommonAPI) Bukkit.getServer().getPluginManager().getPlugin("Dynmap");
+
+        getLogger().info("Trying to hook into Dynmap...");
+        if(dynmapAPI == null) {
+            getLogger().warning("Failed to hook into Dynmap - Dynmap Support is not activated");
+        } else {
+            getLogger().info("Successfully hooked into Dynmap");
+        }
+
+        return dynmapAPI != null;
     }
 
     private void initconfig() {
@@ -221,5 +239,13 @@ public class BananaCore extends JavaPlugin {
 
     public static ScoreboardAPI getScoreboardAPI() {
         return scoreboardAPI;
+    }
+
+    public static DynmapCommonAPI getDynmapAPI() {
+        return dynmapAPI;
+    }
+
+    public boolean hasDynmapSupport() {
+        return dynmapAPI != null;
     }
 }
