@@ -27,7 +27,10 @@ public class HomeData extends PlayerData {
     @Override
     public void saveData(YamlConfiguration config) {
         config.set(key.getKey(), null);
-        homes.keySet().forEach(homeName -> config.set(key.getKey() + "." + homeName, UtilLoc.serialize(homes.get(homeName))));
+        homes.keySet().forEach(homeName -> {
+            if (homes.get(homeName).getWorld() != null)
+                config.set(key.getKey() + "." + homeName, UtilLoc.serialize(homes.get(homeName)));
+        });
     }
 
     @Override

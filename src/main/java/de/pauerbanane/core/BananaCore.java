@@ -28,6 +28,8 @@ import de.pauerbanane.core.addons.settings.PlayerSettings;
 import de.pauerbanane.core.addons.settings.data.Settings;
 import de.pauerbanane.core.addons.snowcontrol.SnowControl;
 import de.pauerbanane.core.addons.ultrahardcore.UltraHardcore;
+import de.pauerbanane.core.addons.vote.VoteAddon;
+import de.pauerbanane.core.addons.votifier.Votifier;
 import de.pauerbanane.core.commands.AddonCommand;
 import de.pauerbanane.core.commands.CheckPermissionCommand;
 import de.pauerbanane.core.commands.CommandSetup;
@@ -185,6 +187,8 @@ public class BananaCore extends JavaPlugin {
         addonManager.registerAddon(new SnowControl(), "SnowControl");
         addonManager.registerAddon(new DeathMessages(), "Todesnachrichten");
         addonManager.registerAddon(new UltraHardcore(), "Ultra-Hardcore");
+        addonManager.registerAddon(new VoteAddon(), "VoteAddon");
+        addonManager.registerAddon(new Votifier(), "Votifier");
     }
 
     public void registerCommand(BaseCommand command) {
