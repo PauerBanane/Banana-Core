@@ -95,7 +95,6 @@ public class PlotManager {
     public void reRentPlot(Player player, Plot plot) {
         if(plot.isRentable()) {
             plot.setExpireDate(LocalDateTime.now().plusDays(plot.getPlotGroup().getRentDays()));
-            player.sendMessage(F.main("Plot", "Du hast das Grundstück bis zum §e" + plot.getExpireDateFormatted() + " §7verlängert."));
             savePlot(plot);
         }
     }

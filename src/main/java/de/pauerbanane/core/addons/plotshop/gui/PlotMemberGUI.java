@@ -40,7 +40,7 @@ public class PlotMemberGUI implements InventoryProvider {
             }));
         }
         contents.set(SlotPos.of(3, 4), ClickableItem.of(new ItemBuilder(Material.EMERALD).name("§2Spieler hinzufügen").build(),  e -> {
-            new ChatInput(player, "Gib den Spielernamen ein:", t -> {
+            new ChatInput(player, "§eGib den Spielernamen ein:", t -> {
                 if(!BananaCore.getInstance().getPlayerDataManager().getPluginStorage(BananaCore.getInstance()).checkIfExists(t)) {
                     player.sendActionBar(F.error("Plot", "Dieser Spieler existiert nicht."));
                     return;
@@ -49,7 +49,7 @@ public class PlotMemberGUI implements InventoryProvider {
                 DefaultDomain members = this.plot.getRegion().getMembers();
                 members.addPlayer(target);
                 this.plot.getRegion().setMembers(members);
-                player.sendMessage("Du hast §e" + t + " §7Baurechte auf diesem Grundstgegeben.");
+                player.sendMessage(F.main("Plots", "Du hast §e" + t + " §7Baurechte auf diesem Grundstück gegeben."));
                 UtilPlayer.playSound(player, Sound.BLOCK_NOTE_BLOCK_GUITAR, 0.8F, 1.25F);
                 reOpen(player, contents);
             });

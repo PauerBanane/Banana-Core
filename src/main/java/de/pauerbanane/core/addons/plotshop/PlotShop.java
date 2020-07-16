@@ -91,7 +91,7 @@ public class PlotShop extends Addon implements Listener {
             BananaCore.getScoreboardAPI().getBoardManager().setBoard(e.getPlayer(), new PlotBoard(plot));
         } else if(player.getUniqueId().equals(plot.getOwner()) && plot.isRentable() && plot.isAboutToExpire()) {
             player.sendMessage(F.main("Plot", "Dein Grundstück §e" + plot.getRegion().getId() + " §7wird in §e" + plot.getExpireHours() + " Stunden §7ablaufen."));
-            player.sendMessage(F.main("Plot", "Gebe §2/plot verlängern §7ein, um die Mietdauer zu verlängern."));
+            player.sendMessage(F.main("Plot", "Gebe §2/plot §7ein, um die Mietdauer zu verlängern."));
         }
 
         if(plot.getOwner() != null && plot.getOwner().equals(player.getUniqueId()) && plot.isRentable())

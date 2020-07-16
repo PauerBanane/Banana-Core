@@ -213,7 +213,7 @@ public class SchematicBrowserGUI implements InventoryProvider {
         .build(), click -> {
             if(click.isLeftClick()) {
                 if(click.getCursor() == null || click.getCursor().getType() == Material.AIR) {
-                    ConfirmationGUI.open(player, "§cLöschen §fbestätigen", bool -> {
+                    ConfirmationGUI.open(player, "§cLöschen §fbestätigen: §e" + folder.getName(), bool -> {
                         if(bool) {
                             if(!folder.getAbsolutePath().equalsIgnoreCase(addon.getSchematicFolder().getAbsolutePath())) {
                                 File prevFolder = folder.getParentFile();
@@ -228,7 +228,7 @@ public class SchematicBrowserGUI implements InventoryProvider {
                     File schematicFile = getSchematicFile(click.getCursor());
                     String name = String.valueOf(schematicFile.getName()).replace(".schem", "");
                     click.getView().setCursor(new ItemStack(Material.AIR));
-                    ConfirmationGUI.open(player, "§cLöschen §fbestätigen", bool -> {
+                    ConfirmationGUI.open(player, "§cLöschen §fbestätigen: §e" + name, bool -> {
                         if (bool) {
                             schematicFile.delete();
                             player.sendMessage(F.main("Schematic", "Die Schematic §a" + name + " §7wurde §cgelöscht§7."));

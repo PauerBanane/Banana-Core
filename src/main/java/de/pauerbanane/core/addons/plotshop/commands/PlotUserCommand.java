@@ -1,13 +1,24 @@
 package de.pauerbanane.core.addons.plotshop.commands;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.annotation.*;
+import de.pauerbanane.api.smartInventory.SmartInventory;
+import de.pauerbanane.api.smartInventory.content.InventoryProvider;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.addons.plotshop.Plot;
 import de.pauerbanane.core.addons.plotshop.PlotShop;
+import de.pauerbanane.core.addons.plotshop.gui.PlotManageGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 @CommandAlias("plot")
 @CommandPermission("command.plot.user")
@@ -15,14 +26,26 @@ public class PlotUserCommand extends BaseCommand {
 
     private PlotShop addon;
 
+    private WorldGuardPlatform wgPlatform;
+
 
     public PlotUserCommand(PlotShop addon) {
         this.addon = addon;
+        this.wgPlatform = WorldGuard.getInstance().getPlatform();
     }
 
     @Default
-    public void onDefault(Player sender) {
-        sender.sendMessage(F.main("Plot", "Coming soon..."));
+    public void plotBase(Player sender) {
+        RegionManager manager = this.wgPlatform.getRegionContainer().get(BukkitAdapter.adapt(sender.getWorld()));
+        ApplicableRegionSet regions = manager.getApplicableRegions(BukkitAdapter.asBlockVector(sender.getLocation()));
+        Optional<ProtectedRegion> region = regions.getRegions().stream().filter(rg -> rg.getOwners().contains(sender.getUniqueId()))
+                .filter(rg -> this.addon.getManager().isPlotRegion(rg.getId())).findFirst();
+        if (!region.isPresent()) {
+            sender.sendMessage(F.error("Plots", "Du befindest dich nicht auf deinem Grundstück."));
+            return;
+        }
+        Plot plot = this.addon.getManager().getPlot(((ProtectedRegion)region.get()).getId());
+        SmartInventory.builder().provider((InventoryProvider)new PlotManageGUI(this.addon, plot)).title("Dein Grundstück").size(3).build().open(sender);
     }
 
     @Subcommand("list")
@@ -54,7 +77,7 @@ public class PlotUserCommand extends BaseCommand {
         sender.sendMessage(F.error("Plot", "Du hast nicht genügend Geld um das Grundstück zu kaufen."));
     }
 
-    @Subcommand("verlängern")
+    /*@Subcommand("verlängern")
     public void reRent(Player sender) {
         if(!addon.getReRentCache().containsKey(sender.getUniqueId())) {
             if (!addon.getTempReRentCache().containsKey(sender.getUniqueId())) {
@@ -84,7 +107,7 @@ public class PlotUserCommand extends BaseCommand {
             } else
                 sender.sendMessage(F.error("Plot", "Du hast nicht genügend Geld, um dein Grundstück zu verlängern."));
         }
-    }
+    }*/
 
     @Subcommand("info")
     @CommandCompletion("@plot")
