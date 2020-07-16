@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,8 @@ public class SchematicBrowserGUI implements InventoryProvider {
         this.arrayOfFolders     = folder.listFiles(File::isDirectory);
         this.arrayOfSchematics  = folder.listFiles(f -> !f.isDirectory());
 
+
+
         Arrays.stream(arrayOfSchematics).forEach(schematic -> schematicNames.add(String.valueOf(schematic.getName()).replace(".schem", "")));
     }
 
@@ -61,9 +64,25 @@ public class SchematicBrowserGUI implements InventoryProvider {
          */
         for (i = arrayOfFolders.length, b = 0; b < i; b++) {
             File subFolder = arrayOfFolders[b];
+
+            int subSchematics = 0;
+            ArrayList<File> tempFolderCache = Lists.newArrayList(subFolder);
+            while (!tempFolderCache.isEmpty()) {
+                File fol = tempFolderCache.get(0);
+                for(File file : fol.listFiles()) {
+                    if (!file.isDirectory()) {
+                        subSchematics++;
+                    } else if (file.isDirectory()) {
+                        tempFolderCache.add(file);
+                    }
+                }
+                tempFolderCache.remove(fol);
+            }
+
             items.add(ClickableItem.of(new ItemBuilder(Material.CHEST)
                     .name("§a" + subFolder.getName())
-                    .lore("§e" + subFolder.listFiles(f -> !f.isDirectory()).length + " §fSchematics")
+                    //.lore("§e" + subFolder.listFiles(f -> !f.isDirectory()).length + " §fSchematics")
+                    .lore("§e" + subSchematics + " §fSchematics")
                     .build(), click -> {
                     if (click.getCursor() == null || click.getCursor().getType() == Material.AIR) {
                         SmartInventory.builder().title("§2Schematic Browser").size(5, 9).provider(new SchematicBrowserGUI(subFolder)).build().open(player);
