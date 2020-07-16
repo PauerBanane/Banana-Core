@@ -8,6 +8,7 @@ import de.pauerbanane.api.data.PlayerDataManager;
 import de.pauerbanane.api.scoreboards.ScoreboardAPI;
 import de.pauerbanane.core.addons.afk.AFK;
 import de.pauerbanane.core.addons.beds.Beds;
+import de.pauerbanane.core.addons.carriages.Carriages;
 import de.pauerbanane.core.addons.chairs.Chairs;
 import de.pauerbanane.core.addons.chat.PluginMessageChat;
 import de.pauerbanane.core.addons.chestlock.ChestLock;
@@ -127,6 +128,7 @@ public class BananaCore extends JavaPlugin {
     @Override
     public void onDisable() {
         addonManager.shutdown();
+        Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer("§7Der Server startet neu"));
     }
 
     private boolean setupEconomy() {
@@ -164,6 +166,7 @@ public class BananaCore extends JavaPlugin {
 
     private void registerAddons() {
         addonManager.registerAddon(new AFK(), "AFK");
+        addonManager.registerAddon(new Carriages(), "Carriages");
         addonManager.registerAddon(new Chairs(), "Chairs");
         addonManager.registerAddon(new PluginMessageChat(), "Chat");
         addonManager.registerAddon(new ChestLock(), "ChestLock");

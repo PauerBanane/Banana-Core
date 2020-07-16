@@ -3,8 +3,11 @@ package de.pauerbanane.core.addons.carriages;
 import com.google.common.collect.Maps;
 import de.pauerbanane.api.util.FileLoader;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CarriageManager {
 
@@ -23,7 +26,7 @@ public class CarriageManager {
     }
 
     public boolean createNewLine(String name, World world) {
-        if(getCarriageLine(name) == null) return false;
+        if(getCarriageLine(name) != null) return false;
         CarriageLine carriageLine = new CarriageLine(name, world.getName());
         carriageLines.put(carriageLine.getName(), carriageLine);
         return true;
@@ -35,24 +38,77 @@ public class CarriageManager {
         return true;
     }
 
+    public boolean isCarriageRegion(String regionID, String worldName) {
+        for(CarriageLine carriageLine : carriageLines.values()) {
+            if (carriageLine.getWorld().equals(worldName)) {
+                for (Carriage carriage : carriageLine.getCarriages()) {
+                    if (carriage.getRegionID().equals(regionID))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Carriage getCarriageByRegion(String regionID, String worldName) {
+        for(CarriageLine carriageLine : carriageLines.values()) {
+            if (carriageLine.getWorld().equals(worldName)) {
+                for (Carriage carriage : carriageLine.getCarriages()) {
+                    if (carriage.getRegionID().equals(regionID))
+                        return carriage;
+                }
+            }
+        }
+        return null;
+    }
+
     private void load() {
-        for (String line : config.getKeys(false)) {
-            CarriageLine carriageLine = config.getConfig().getSerializable(line, CarriageLine.class);
+        if(!config.isSet("carriageLines")) return;
+
+        ConfigurationSection section = config.getConfigurationSection("carriageLines");
+        for (String line : section.getKeys(false)) {
+            CarriageLine carriageLine = section.getSerializable(line, CarriageLine.class);
             carriageLines.put(carriageLine.getName(), carriageLine);
+
             addon.getPlugin().getLogger().info("Loaded Carriage-Line " + carriageLine.getName());
         }
         addon.getPlugin().getLogger().info("Loaded " + carriageLines.size() + " Carriage-Lines");
+
+        if(!config.isSet("carriages")) return;
+
+        section = config.getConfigurationSection("carriages");
+        for (String carri : section.getKeys(false)) {
+            Carriage carriage = section.getSerializable(carri, Carriage.class);
+            if(getCarriageLine(carriage.getTempCarriageLineName()) != null) {
+                getCarriageLine(carriage.getTempCarriageLineName()).addCarriage(carriage);
+            } else
+                addon.getPlugin().getLogger().warning("Could not load Carriage " + carriage.getName() + ": No Carriage-Line named " + carriage.getTempCarriageLineName() + " found");
+
+            addon.getPlugin().getLogger().info("Loaded Carriage " + carriage.getName());
+        }
     }
 
-    private void save() {
+    public void saveAll() {
         for(String line : config.getKeys(false))
             config.set(line, null);
 
-        carriageLines.values().forEach(carriageLine -> config.set(carriageLine.getName(), carriageLine));
+        carriageLines.values().forEach(carriageLine -> {
+            config.set("carriageLines." + carriageLine.getName(), carriageLine);
+            carriageLine.getCarriages().forEach(carriage -> config.set("carriages." + carriage.getName(), carriage));
+        });
+        config.save();
+    }
+
+    public FileLoader getConfig() {
+        return config;
     }
 
     public CarriageLine getCarriageLine(String name) {
         return carriageLines.get(name);
+    }
+
+    public Set<String> getCarriageLineNames() {
+        return carriageLines.keySet();
     }
 
 }

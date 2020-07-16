@@ -39,25 +39,25 @@ public class SitListener implements Listener {
         Settings settings = cp.getData(Settings.class);
 
         if(!settings.autoSitEnabled()) return;
-        addon.toggleSit(e.getPlayer(), e.getClickedBlock());
+        addon.toggleSit(e.getPlayer(), e.getClickedBlock(), null);
     }
 
     @EventHandler
     public void handleTeleport(PlayerTeleportEvent e) {
         if(addon.isSitting(e.getPlayer()))
-            addon.toggleSit(e.getPlayer(), null);
+            addon.toggleSit(e.getPlayer(), null, e.getCause());
     }
 
     @EventHandler
     public void handleQuit(PlayerQuitEvent e) {
         if(addon.isSitting(e.getPlayer()))
-            addon.toggleSit(e.getPlayer(), null);
+            addon.toggleSit(e.getPlayer(), null, null);
     }
 
     @EventHandler
     public void handleDeath(PlayerDeathEvent e) {
         if(addon.isSitting(e.getEntity()))
-            addon.toggleSit(e.getEntity(), null);
+            addon.toggleSit(e.getEntity(), null, null);
     }
 
     @EventHandler

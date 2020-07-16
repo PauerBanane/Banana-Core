@@ -1,5 +1,6 @@
 package de.pauerbanane.core.addons.chairs.events;
 
+import de.pauerbanane.core.addons.chairs.Chair;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -11,13 +12,13 @@ public class UnsitEvent extends Event {
 
     private Player player;
 
-    private ArmorStand seat;
+    private Chair chair;
 
     private String message;
 
-    public UnsitEvent(Player player, ArmorStand seat, String message) {
+    public UnsitEvent(Player player, Chair chair, String message) {
         this.player = player;
-        this.seat = seat;
+        this.chair = chair;
         this.message = message;
     }
 
@@ -26,7 +27,7 @@ public class UnsitEvent extends Event {
     }
 
     public ArmorStand getSeat() {
-        return this.seat;
+        return this.chair.getArmorStand();
     }
 
     public String getMessage() {
@@ -45,4 +46,7 @@ public class UnsitEvent extends Event {
         return handlers;
     }
 
+    public Chair getChair() {
+        return chair;
+    }
 }

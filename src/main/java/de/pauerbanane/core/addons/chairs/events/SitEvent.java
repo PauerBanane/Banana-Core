@@ -1,5 +1,6 @@
 package de.pauerbanane.core.addons.chairs.events;
 
+import de.pauerbanane.core.addons.chairs.Chair;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -12,15 +13,15 @@ public class SitEvent extends Event implements Cancellable {
 
     private Player player;
 
-    private ArmorStand seat;
+    private Chair chair;
 
     private String message;
 
-    private boolean canceled = false;
+    private boolean cancelled = false;
 
-    public SitEvent(Player player, ArmorStand seat, String message) {
+    public SitEvent(Player player, Chair chair, String message) {
         this.player = player;
-        this.seat = seat;
+        this.chair = chair;
         this.message = message;
     }
 
@@ -29,7 +30,7 @@ public class SitEvent extends Event implements Cancellable {
     }
 
     public ArmorStand getSeat() {
-        return this.seat;
+        return this.chair.getArmorStand();
     }
 
     public String getMessage() {
@@ -49,11 +50,14 @@ public class SitEvent extends Event implements Cancellable {
     }
 
     public boolean isCancelled() {
-        return this.canceled;
+        return this.cancelled;
     }
 
-    public void setCancelled(boolean canceled) {
-        this.canceled = canceled;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 
+    public Chair getChair() {
+        return chair;
+    }
 }

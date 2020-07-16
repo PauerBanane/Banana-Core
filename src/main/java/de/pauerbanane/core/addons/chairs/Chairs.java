@@ -13,6 +13,7 @@ import org.bukkit.block.data.type.Stairs;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -39,7 +40,7 @@ public class Chairs extends Addon {
     @Override
     public void onDisable() {
         for(UUID id : registeredChairs.keySet())
-            toggleSit(Bukkit.getPlayer(id), null);
+            toggleSit(Bukkit.getPlayer(id), null, null);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class Chairs extends Addon {
 
     }
 
-    public void toggleSit(Player player, Block block) {
+    public void toggleSit(Player player, Block block, PlayerTeleportEvent.TeleportCause teleportCause) {
         if(!isSitting(player)) {
             if(isOccupied(block)) {
                 player.sendMessage(F.main("Sit", "Dieser Platz ist bereits besetzt."));
@@ -62,7 +63,8 @@ public class Chairs extends Addon {
             seat.setAI(false);
             seat.setCollidable(false);
 
-            SitEvent sitEvent = new SitEvent(player, seat, sitMessage);
+            Chair chair = registeredChairs.get(player.getUniqueId());
+            SitEvent sitEvent = new SitEvent(player, chair, sitMessage);
             sitEvent.callEvent();
             if(sitEvent.isCancelled()) {
                 seat.remove();
@@ -76,11 +78,13 @@ public class Chairs extends Addon {
             Chair chair = registeredChairs.get(player.getUniqueId());
             ArmorStand seat = chair.getArmorStand();
 
-            new UnsitEvent(player, seat, unsitMessage).callEvent();
+            new UnsitEvent(player, chair, unsitMessage).callEvent();
 
             player.sendMessage(F.main("Sit", unsitMessage));
             registeredChairs.remove(player.getUniqueId());
             seat.remove();
+
+            if(teleportCause != null && teleportCause != PlayerTeleportEvent.TeleportCause.PLUGIN)
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 player.teleport(chair.getOldLocation());
             }, 0);

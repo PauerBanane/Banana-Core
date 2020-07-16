@@ -1,20 +1,21 @@
 package de.pauerbanane.core.addons.carriages;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import de.pauerbanane.api.util.FileLoader;
 import de.pauerbanane.api.util.UtilLoc;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @SerializableAs("CarriageLine")
 public class CarriageLine implements ConfigurationSerializable {
 
-    private ArrayList<Carriage> carriages = Lists.newArrayList();
+    private HashMap<String, Carriage> carriages = Maps.newHashMap();
 
     private String world;
 
@@ -29,8 +30,27 @@ public class CarriageLine implements ConfigurationSerializable {
         if(carriage.hasCarriageLine()) return false;
 
         carriage.setCarriageLine(this);
-        carriages.add(carriage);
-        return carriages.add(carriage);
+        carriages.put(carriage.getName(), carriage);
+        return true;
+    }
+
+    public boolean removeCarriage(Carriage carriage) {
+        if(!carriages.containsValue(carriage)) return false;
+        carriages.remove(carriage.getName());
+        return true;
+    }
+
+    public boolean hasCarriage(String name) {
+        return carriages.containsKey(name);
+    }
+
+    public Carriage getCarriage(String name) {
+        if(!hasCarriage(name)) return null;
+        return carriages.get(name);
+    }
+
+    public Set<String> getCarriageNames() {
+        return carriages.keySet();
     }
 
     public String getName() {
@@ -42,9 +62,6 @@ public class CarriageLine implements ConfigurationSerializable {
         LinkedHashMap<String, Object> result = new LinkedHashMap<>();
         result.put("name", name);
         result.put("world", world);
-        for(int i = 0; i < carriages.size(); i++) {
-            result.put("carriages." + (i+1), carriages.get(i));
-        }
 
         return result;
     }
@@ -55,16 +72,14 @@ public class CarriageLine implements ConfigurationSerializable {
 
         CarriageLine carriageLine = new CarriageLine(name, world);
 
-        boolean idle = true;
-        int i = 0;
-        do {
-            if((Carriage) args.get("carriages." + (i+1)) != null) {
-                Carriage carriage = (Carriage) args.get("carriages." + (i+1));
-                carriageLine.addCarriage(carriage);
-            } else
-                idle = false;
-        } while(idle);
-
         return carriageLine;
+    }
+
+    public String getWorld() {
+        return world;
+    }
+
+    public Collection<Carriage> getCarriages() {
+        return carriages.values();
     }
 }

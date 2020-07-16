@@ -22,7 +22,7 @@ public class SitCommand extends BaseCommand {
             sender.sendMessage(F.error("Sit", "Du kannst in der Luft nicht sitzen."));
             return;
         }
-        addon.toggleSit(sender, null);
+        addon.toggleSit(sender, null, null);
     }
 
 }
