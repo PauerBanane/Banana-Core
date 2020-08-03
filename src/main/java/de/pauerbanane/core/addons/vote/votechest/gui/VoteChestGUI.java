@@ -8,6 +8,7 @@ import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.ItemBuilder;
 import de.pauerbanane.api.util.UtilItem;
 import de.pauerbanane.api.util.UtilPlayer;
+import de.pauerbanane.core.addons.vote.VoteManager;
 import de.pauerbanane.core.addons.vote.votechest.VoteChest;
 import de.pauerbanane.core.addons.vote.votechest.VoteChestManager;
 import de.pauerbanane.core.addons.vote.votechest.VoteKey;
@@ -37,7 +38,7 @@ public class VoteChestGUI implements InventoryProvider {
 
         content.fillBorders(ClickableItem.empty(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").build()));
 
-        content.set(SlotPos.of(2, 4), ClickableItem.empty(new ItemBuilder(UtilItem.getPlayerHead(player.getUniqueId())).name("§7Votes: §a§l" + voteData.getVotes()).build()));
+        content.set(SlotPos.of(2, 4), ClickableItem.empty(new ItemBuilder(UtilItem.getPlayerHead(player.getUniqueId())).name("§7Votes: §a§l" + VoteManager.getVotes(player)).build()));
 
         content.set(SlotPos.of(1, 2), ClickableItem.of(new ItemBuilder(Material.IRON_INGOT).name(VoteKey.getVoteKeyName(VoteKey.Type.OLD_KEY) + "§7: §r§a" + oldKeys).build(), click -> {
             if(voteChest.isOccupied()) {

@@ -2,6 +2,7 @@ package de.pauerbanane.core.addons.essentials;
 
 import de.pauerbanane.api.addons.Addon;
 import de.pauerbanane.api.util.FileLoader;
+import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.addons.essentials.commands.*;
 import de.pauerbanane.core.addons.essentials.commands.spawn.SetspawnCommand;
 import de.pauerbanane.core.addons.essentials.commands.spawn.SpawnCommand;
@@ -26,16 +27,18 @@ public class Essentials extends Addon {
 
         new TeleportRequestManager(this);
 
-        registerCommand(new HomeCommand());
-        registerCommand(new SethomeCommand());
-        registerCommand(new DelhomeCommand());
+        if(!BananaCore.getInstance().getServerName().equalsIgnoreCase("skyblock")) {
+            registerCommand(new HomeCommand());
+            registerCommand(new SethomeCommand());
+            registerCommand(new DelhomeCommand());
+            registerCommand(new BackCommand(this));
+        }
 
         registerCommand(new TeleportAllCommand());
         registerCommand(new TeleportCommand());
         registerCommand(new TeleportHereCommand());
         registerCommand(new TeleportPositionCommand());
 
-        registerCommand(new BackCommand(this));
         registerCommand(new BonemealCommand());
         registerCommand(new ClearCommand());
         registerCommand(new EnderchestCommand());

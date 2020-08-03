@@ -13,8 +13,7 @@ public class VoteData extends PlayerData {
 
     private int oldKeys = 0,
                 ancientKeys = 0,
-                epicKeys = 0,
-                votes = 0;
+                epicKeys = 0;
 
     @Override
     public void initialize() {
@@ -27,7 +26,6 @@ public class VoteData extends PlayerData {
         config.set(key.getKey() + ".oldKey", oldKeys);
         config.set(key.getKey() + ".ancientKey", ancientKeys);
         config.set(key.getKey() + ".epicKey", epicKeys);
-        config.set(key.getKey() + ".votes", votes);
     }
 
     @Override
@@ -38,7 +36,6 @@ public class VoteData extends PlayerData {
         oldKeys = section.getInt("oldKey");
         ancientKeys = section.getInt("ancientKey");
         epicKeys = section.getInt("epicKey");
-        votes = section.getInt("votes");
     }
 
     public int getVoteKeys(VoteKey.Type voteKey) {
@@ -46,10 +43,6 @@ public class VoteData extends PlayerData {
         if (voteKey == VoteKey.Type.ANCIENT_KEY) return ancientKeys;
         if (voteKey == VoteKey.Type.EPIC_KEY) return epicKeys;
         return 0;
-    }
-
-    public int getVotes() {
-        return votes;
     }
 
     public void setVoteKeys(VoteKey.Type type, int amount) {

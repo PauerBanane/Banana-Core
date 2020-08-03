@@ -151,15 +151,20 @@ public class VoteChestManager implements Listener {
             addon.getPlugin().getLogger().info("Loaded " + voteChests.size() + " Vote-Chests");
         }
 
-        if(config.isSet("commonItems") && config.isSet("rareItems") && config.isSet("veryRareItems")) {
+        if (config.isSet(VoteKey.Type.OLD_KEY.toString())) {
             voteKeys.add(config.getConfig().getSerializable(VoteKey.Type.OLD_KEY.toString(), VoteKey.class));
+        } else
+            voteKeys.add(new VoteKey(VoteKey.Type.OLD_KEY, Lists.newArrayList(new ItemStack(Material.COAL_ORE)), Lists.newArrayList(new ItemStack(Material.IRON_ORE)), Lists.newArrayList(new ItemStack(Material.GOLD_ORE))));
+
+        if (config.isSet(VoteKey.Type.ANCIENT_KEY.toString())) {
             voteKeys.add(config.getConfig().getSerializable(VoteKey.Type.ANCIENT_KEY.toString(), VoteKey.class));
+        } else
+            voteKeys.add(new VoteKey(VoteKey.Type.ANCIENT_KEY, Lists.newArrayList(new ItemStack(Material.COAL_ORE)), Lists.newArrayList(new ItemStack(Material.IRON_ORE)), Lists.newArrayList(new ItemStack(Material.GOLD_ORE))));
+
+        if (config.isSet(VoteKey.Type.EPIC_KEY.toString())) {
             voteKeys.add(config.getConfig().getSerializable(VoteKey.Type.EPIC_KEY.toString(), VoteKey.class));
-        } else {
-            voteKeys.add(new VoteKey(VoteKey.Type.OLD_KEY, Lists.newArrayList(new ItemStack(Material.WHEAT)), Lists.newArrayList(new ItemStack(Material.GOLD_INGOT)), Lists.newArrayList(new ItemStack(Material.DIAMOND))));
-            voteKeys.add(new VoteKey(VoteKey.Type.ANCIENT_KEY, Lists.newArrayList(new ItemStack(Material.WHEAT)), Lists.newArrayList(new ItemStack(Material.GOLD_INGOT)), Lists.newArrayList(new ItemStack(Material.DIAMOND))));
-            voteKeys.add(new VoteKey(VoteKey.Type.EPIC_KEY, Lists.newArrayList(new ItemStack(Material.WHEAT)), Lists.newArrayList(new ItemStack(Material.GOLD_INGOT)), Lists.newArrayList(new ItemStack(Material.DIAMOND))));
-        }
+        } else
+            voteKeys.add(new VoteKey(VoteKey.Type.EPIC_KEY, Lists.newArrayList(new ItemStack(Material.COAL_ORE)), Lists.newArrayList(new ItemStack(Material.IRON_ORE)), Lists.newArrayList(new ItemStack(Material.GOLD_ORE))));
     }
 
     public void save() {

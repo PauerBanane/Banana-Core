@@ -116,6 +116,12 @@ public class VoteKey implements ConfigurationSerializable {
         EPIC_KEY;
     }
 
+    public enum Rarity {
+        COMMON,
+        RARE,
+        VERY_RARE;
+    }
+
     public static VoteKey.Type getTypeByString(String s) {
         if(s.equalsIgnoreCase("OLD_KEY")) return Type.OLD_KEY;
         if(s.equalsIgnoreCase("ANICENT_KEY")) return Type.ANCIENT_KEY;
@@ -140,6 +146,13 @@ public class VoteKey implements ConfigurationSerializable {
 
     public ArrayList<ItemStack> getVeryRareItems() {
         return veryRareItems;
+    }
+
+    public void setItems(ArrayList<ItemStack> items, Rarity rarity) {
+        if (items.isEmpty()) items.add(new ItemStack(Material.WHEAT_SEEDS));
+        if(rarity == Rarity.COMMON) this.commonItems = items;
+        if(rarity == Rarity.RARE) this.rareItems = items;
+        if (rarity == Rarity.VERY_RARE) this.veryRareItems = items;
     }
 
     public Type getType() {

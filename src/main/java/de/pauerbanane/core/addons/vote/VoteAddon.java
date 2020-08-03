@@ -7,11 +7,14 @@ import org.bukkit.inventory.ItemStack;
 
 public class VoteAddon extends Addon {
 
-    public VoteChestManager voteChestManager;
+    private VoteChestManager voteChestManager;
+
+    private VoteManager voteManager;
 
     @Override
     public void onEnable() {
         this.voteChestManager = new VoteChestManager(this);
+        this.voteManager = new VoteManager(this);
     }
 
     @Override

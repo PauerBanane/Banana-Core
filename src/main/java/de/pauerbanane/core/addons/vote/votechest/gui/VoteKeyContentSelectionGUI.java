@@ -23,13 +23,13 @@ public class VoteKeyContentSelectionGUI implements InventoryProvider {
         content.fillBorders(ClickableItem.empty(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("").build()));
 
         content.set(SlotPos.of(1, 2), ClickableItem.of(new ItemBuilder(Material.IRON_INGOT).name(VoteKey.getVoteKeyName(voteKey.getType()) + "§7: Standard Items").build(), click -> {
-            SmartInventory.builder().provider(new VoteChestContentGUI(voteKey, voteKey.getCommonItems())).size(3).build().open(player);
+            SmartInventory.builder().provider(new VoteChestContentGUI(voteKey, voteKey.getCommonItems(), VoteKey.Rarity.COMMON)).size(5).build().open(player);
         }));
         content.set(SlotPos.of(1, 4), ClickableItem.of(new ItemBuilder(Material.GOLD_INGOT).name(VoteKey.getVoteKeyName(voteKey.getType()) + "§7: §6Seltene §7Items").build(), click -> {
-            SmartInventory.builder().provider(new VoteChestContentGUI(voteKey, voteKey.getRareItems())).size(3).build().open(player);
+            SmartInventory.builder().provider(new VoteChestContentGUI(voteKey, voteKey.getRareItems(), VoteKey.Rarity.RARE)).size(5).build().open(player);
         }));
         content.set(SlotPos.of(1, 6), ClickableItem.of(new ItemBuilder(Material.NETHERITE_INGOT).name(VoteKey.getVoteKeyName(voteKey.getType()) + "§7: §5Epische §7Items").build(), click -> {
-            SmartInventory.builder().provider(new VoteChestContentGUI(voteKey, voteKey.getVeryRareItems())).size(3).build().open(player);
+            SmartInventory.builder().provider(new VoteChestContentGUI(voteKey, voteKey.getVeryRareItems(), VoteKey.Rarity.VERY_RARE)).size(5).build().open(player);
         }));
     }
 }
