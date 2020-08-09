@@ -14,10 +14,14 @@ import de.pauerbanane.api.util.UtilMath;
 import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.addons.essentials.playerdata.HomeData;
 import de.pauerbanane.core.data.CorePlayer;
+import de.pauerbanane.core.data.PermissionManager;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.group.Group;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,6 +65,12 @@ public class CommandSetup {
             World world = c.getPlayer().getWorld();
             return ImmutableList.copyOf(WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world)).getRegions().keySet());
         });
+        commandManager.getCommandCompletions().registerCompletion("permissionGroup", c -> {
+            ArrayList<String> groupNames = Lists.newArrayList();
+            PermissionManager.getApi().getGroupManager().getLoadedGroups().forEach(group -> groupNames.add(group.getName()));
+
+            return ImmutableList.copyOf(groupNames);
+        });
         commandManager.getCommandCompletions().registerCompletion("nodetype", c -> {
             return ImmutableList.of("permission", "meta", "prefix", "suffix");
         });
@@ -80,6 +90,16 @@ public class CommandSetup {
                 throw new InvalidCommandArgument("Invalid Material specified.");
 
         });
+        commandManager.getCommandContexts().registerContext(Group.class, c -> {
+            final String tag = c.popFirstArg();
+            Group group = PermissionManager.getApi().getGroupManager().getGroup(tag);
+
+            if (group != null) {
+                return group;
+            } else
+                throw new InvalidCommandArgument("Ungültige LuckPerms-Gruppe angegeben.");
+        });
+
         commandManager.getCommandContexts().registerContext(GameMode.class, c -> {
 
             final String tag = c.popFirstArg();

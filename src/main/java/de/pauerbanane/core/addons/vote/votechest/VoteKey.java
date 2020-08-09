@@ -1,16 +1,10 @@
 package de.pauerbanane.core.addons.vote.votechest;
 
 import com.google.common.collect.Lists;
-import com.mojang.datafixers.types.templates.List;
 import de.pauerbanane.api.util.UtilMath;
-import de.pauerbanane.core.addons.carriages.CarriageLine;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -130,9 +124,9 @@ public class VoteKey implements ConfigurationSerializable {
     }
 
     public static String getVoteKeyName(VoteKey.Type type) {
-        if (type == Type.OLD_KEY) return "§7Alte Truhe";
-        if(type == Type.ANCIENT_KEY) return "§6Antike Truhe";
-        if (type == Type.EPIC_KEY) return "§5Epische Truhe";
+        if (type == Type.OLD_KEY)       return "§7Alte Truhe";
+        if (type == Type.ANCIENT_KEY)   return "§6Antike Truhe";
+        if (type == Type.EPIC_KEY)      return "§5Epische Truhe";
         return null;
     }
 
@@ -150,8 +144,8 @@ public class VoteKey implements ConfigurationSerializable {
 
     public void setItems(ArrayList<ItemStack> items, Rarity rarity) {
         if (items.isEmpty()) items.add(new ItemStack(Material.WHEAT_SEEDS));
-        if(rarity == Rarity.COMMON) this.commonItems = items;
-        if(rarity == Rarity.RARE) this.rareItems = items;
+        if (rarity == Rarity.COMMON) this.commonItems = items;
+        if (rarity == Rarity.RARE) this.rareItems = items;
         if (rarity == Rarity.VERY_RARE) this.veryRareItems = items;
     }
 

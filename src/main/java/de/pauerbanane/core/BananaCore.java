@@ -22,6 +22,8 @@ import de.pauerbanane.core.addons.phantomhandler.PhantomHandler;
 import de.pauerbanane.core.addons.playershop.PlayerShop;
 import de.pauerbanane.core.addons.plotshop.PlotShop;
 import de.pauerbanane.core.addons.portals.Portals;
+import de.pauerbanane.core.addons.ranks.Ranks;
+import de.pauerbanane.core.addons.regrowingTrees.RegrowingTrees;
 import de.pauerbanane.core.addons.resourcepack.Resourcepack;
 import de.pauerbanane.core.addons.schematicbrowser.SchematicBrowser;
 import de.pauerbanane.core.addons.settings.PlayerSettings;
@@ -37,6 +39,7 @@ import de.pauerbanane.core.commands.CustomItemCommand;
 import de.pauerbanane.core.data.PermissionManager;
 import de.pauerbanane.core.data.PlayerDataLoader;
 import de.pauerbanane.core.listener.DisableJoinQuitMessage;
+import de.pauerbanane.core.sql.DatabaseManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -75,6 +78,8 @@ public class BananaCore extends JavaPlugin {
 
     private CommandSetup commandSetup;
 
+    private DatabaseManager databaseManager;
+
     private PlayerDataLoader playerDataLoader;
 
     private String serverName;
@@ -88,6 +93,7 @@ public class BananaCore extends JavaPlugin {
         this.scoreboardAPI = new ScoreboardAPI(this);
         this.rootFolder = "plugins/Banana-Core/";
         this.addonFolder = rootFolder + "Addons/";
+        this.databaseManager = new DatabaseManager(this);
         this.commandManager = new PaperCommandManager(this);
         this.commandManager.getLocales().setDefaultLocale(Locale.GERMAN);
         this.initconfig();
@@ -181,6 +187,8 @@ public class BananaCore extends JavaPlugin {
         addonManager.registerAddon(new PhantomHandler(), "Phantom-Manager");
         addonManager.registerAddon(new PlotShop(), "Plots");
         addonManager.registerAddon(new Portals(), "Portal");
+        addonManager.registerAddon(new Ranks(), "Rang");
+        addonManager.registerAddon(new RegrowingTrees(), "RegrowingTrees");
         addonManager.registerAddon(new Resourcepack(), "Resourcepack");
         addonManager.registerAddon(new SchematicBrowser(), "SchematicBrowser");
         addonManager.registerAddon(new PlayerShop(), "Shops");

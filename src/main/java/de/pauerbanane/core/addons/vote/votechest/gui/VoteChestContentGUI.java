@@ -1,7 +1,6 @@
 package de.pauerbanane.core.addons.vote.votechest.gui;
 
 import com.google.common.collect.Lists;
-import com.mysql.fabric.xmlrpc.base.Array;
 import de.pauerbanane.api.smartInventory.ClickableItem;
 import de.pauerbanane.api.smartInventory.SmartInventory;
 import de.pauerbanane.api.smartInventory.content.InventoryContents;
@@ -16,7 +15,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jline.reader.LineReader;
 
 import java.util.ArrayList;
 import java.util.Optional;

@@ -1,24 +1,24 @@
 package de.pauerbanane.core.data;
 
+import com.google.common.collect.Lists;
 import de.pauerbanane.api.util.UtilMath;
 import de.pauerbanane.core.BananaCore;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.context.Context;
 import net.luckperms.api.context.ImmutableContextSet;
+import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeEqualityPredicate;
-import net.luckperms.api.node.types.MetaNode;
-import net.luckperms.api.node.types.PermissionNode;
-import net.luckperms.api.node.types.PrefixNode;
-import net.luckperms.api.node.types.SuffixNode;
+import net.luckperms.api.node.types.*;
 import net.luckperms.api.query.QueryOptions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -125,6 +125,19 @@ public class PermissionManager {
         return builder.build();
     }
 
+    public static InheritanceNode buildInheritanceNode(String group, String server, String world) {
+        InheritanceNode.Builder builder = InheritanceNode.builder();
+        builder.group(group);
+        ImmutableContextSet.Builder contextBuilder = ImmutableContextSet.builder();
+        if(server != null && !server.equals("global"))
+            contextBuilder.add("server", server);
+        if(world != null && !world.equals("global"))
+            contextBuilder.add("world", world);
+        builder.context(contextBuilder.build());
+
+        return builder.build();
+    }
+
     public static MetaNode buildMetaNode(String metaKey, String metaValue, String server, String world) {
         MetaNode.Builder builder = MetaNode.builder();
         builder.key(metaKey);
@@ -173,11 +186,15 @@ public class PermissionManager {
 
     public static void addNode(Player player, Node node) {
         User user = api.getUserManager().getUser(player.getUniqueId());
-        if(node instanceof MetaNode) {
+        if(node instanceof MetaNode || node instanceof InheritanceNode) {
             Optional<Node> own = user.data().toCollection().stream().filter(n -> {
-                return n instanceof MetaNode;
+                return n instanceof MetaNode || n instanceof InheritanceNode;
             }).filter(n -> {
-                return ((MetaNode) n).getMetaKey().equals(((MetaNode) node).getMetaKey());
+                if (n instanceof InheritanceNode) {
+                    return n instanceof InheritanceNode;
+                } else {
+                    return ((MetaNode) n).getMetaKey().equals(((MetaNode) node).getMetaKey());
+                }
             }).filter(n -> {
                 return n.getContexts().equals(node.getContexts());
             }).findFirst();
@@ -194,6 +211,28 @@ public class PermissionManager {
         api.getUserManager().saveUser(user);
 
         return true;
+    }
+
+    public static void addGroupNode(Player player, Group group) {
+        User user = getUser(player.getUniqueId());
+        InheritanceNode node = buildInheritanceNode(group.getName(), null, null);
+
+        removeGroupNodes(player);
+        user.data().add(node);
+        user.setPrimaryGroup(group.getName());
+        api.getUserManager().saveUser(user);
+    }
+
+    public static void removeGroupNodes(Player player) {
+        User user = getUser(player.getUniqueId());
+        ArrayList<Node> toRemove = Lists.newArrayList();
+        user.data().toCollection().forEach(node -> {
+            if (node instanceof InheritanceNode)
+                toRemove.add(node);
+        });
+
+        toRemove.forEach(node -> user.data().remove(node));
+        api.getUserManager().saveUser(user);
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Get specific Node values

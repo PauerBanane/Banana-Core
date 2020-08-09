@@ -26,4 +26,8 @@ public class VoteAddon extends Addon {
     public void onReload() {
 
     }
+
+    public VoteChestManager getVoteChestManager() {
+        return voteChestManager;
+    }
 }

@@ -9,6 +9,11 @@ import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.FileLoader;
 import de.pauerbanane.core.BananaCore;
 import de.pauerbanane.core.addons.lobby.server.ServerInterfaceManager;
+import de.pauerbanane.core.data.PermissionManager;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.types.InheritanceNode;
+import net.luckperms.api.node.types.PermissionNode;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -123,6 +128,7 @@ public class Lobby extends Addon implements Listener {
     public void handleMove(PlayerMoveEvent e) {
         if (!hasAcceptedRules(e.getPlayer().getUniqueId())) {
             e.getPlayer().sendMessage(F.error("Regeln", "Du musst zuerst die Regeln akzeptieren. §e/accept"));
+            e.getPlayer().sendMessage(F.error("Regeln", "Benutze §e/regeln §7um die Regeln zu lesen."));
             e.setCancelled(true);
         }
     }
@@ -131,6 +137,7 @@ public class Lobby extends Addon implements Listener {
     public void handleChat(AsyncPlayerChatEvent e) {
         if (!hasAcceptedRules(e.getPlayer().getUniqueId())) {
             e.getPlayer().sendMessage(F.error("Regeln", "Du musst zuerst die Regeln akzeptieren. §e/accept"));
+            e.getPlayer().sendMessage(F.error("Regeln", "Benutze §e/regeln §7um die Regeln zu lesen."));
             e.setCancelled(true);
         }
     }
@@ -142,6 +149,12 @@ public class Lobby extends Addon implements Listener {
         if(!e.getPlayer().hasPlayedBefore()) {
             broadcast(String.valueOf(firstJoinMessage).replace("%player%", e.getPlayer().getName()));
             rulesNotAccepted.add(e.getPlayer().getUniqueId());
+        } else {
+            User user = PermissionManager.getUser(e.getPlayer().getUniqueId());
+            if(user.getPrimaryGroup().equalsIgnoreCase("default") && hasAcceptedRules(e.getPlayer().getUniqueId())) {
+                InheritanceNode node = PermissionManager.buildInheritanceNode("player", null, null);
+                PermissionManager.addNode(e.getPlayer(), node);
+            }
         }
 
         e.getPlayer().teleport(e.getPlayer().getWorld().getSpawnLocation());
