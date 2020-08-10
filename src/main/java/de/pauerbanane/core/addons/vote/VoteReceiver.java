@@ -43,4 +43,5 @@ public class VoteReceiver implements PluginMessageListener {
         plugin.getLogger().info("Received vote by PluginMessage from " + uuidAsString);
         manager.checkIfVotetargetReached();
     }
+
 }

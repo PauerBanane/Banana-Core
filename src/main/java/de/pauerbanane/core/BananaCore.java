@@ -16,6 +16,7 @@ import de.pauerbanane.core.addons.deathMessages.DeathMessages;
 import de.pauerbanane.core.addons.essentials.Essentials;
 import de.pauerbanane.core.addons.essentials.playerdata.HomeData;
 import de.pauerbanane.core.addons.infos.Infos;
+import de.pauerbanane.core.addons.jumppads.JumppadAddon;
 import de.pauerbanane.core.addons.lobby.Lobby;
 import de.pauerbanane.core.addons.permissionshop.PermissionShop;
 import de.pauerbanane.core.addons.phantomhandler.PhantomHandler;
@@ -182,6 +183,7 @@ public class BananaCore extends JavaPlugin {
         addonManager.registerAddon(new Essentials(), "Essentials");
         addonManager.registerAddon(new Beds(), "ImprovedBeds");
         addonManager.registerAddon(new Infos(), "Infos");
+        addonManager.registerAddon(new JumppadAddon(), "Jumppads");
         addonManager.registerAddon(new Lobby(), "Lobby");
         addonManager.registerAddon(new PermissionShop(), "PermissionShop");
         addonManager.registerAddon(new PhantomHandler(), "Phantom-Manager");

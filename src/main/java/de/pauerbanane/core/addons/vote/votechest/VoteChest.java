@@ -2,7 +2,6 @@ package de.pauerbanane.core.addons.vote.votechest;
 
 import de.pauerbanane.api.util.UtilPlayer;
 import de.pauerbanane.core.BananaCore;
-import de.pauerbanane.core.addons.vote.votechest.VoteKey;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -26,9 +25,9 @@ public class VoteChest {
     private int taskID;
 
     private static final int NORTH = 0,
-                             EAST  = 1,
-                             SOUTH = 2,
-                             WEST = 3;
+            EAST  = 1,
+            SOUTH = 2,
+            WEST = 3;
 
     private Block block;
 
@@ -132,7 +131,7 @@ public class VoteChest {
     public void openChest(Block block) {
         if(!isChest(block)) return;
         org.bukkit.block.Chest chest = (org.bukkit.block.Chest) block.getState();
-        ItemStack veryRareItem = currentVoteKey.getVeryRareItem(chest.getBlockInventory());
+        ItemStack veryRareItem = currentVoteKey.getEpicItem(chest.getBlockInventory());
         if(veryRareItem == null) return;
 
         int id = 4;
@@ -145,7 +144,7 @@ public class VoteChest {
         opened[id] = true;
 
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage("§e" + Bukkit.getPlayer(occupier).getName() + " §7hat §6" + veryRareItem.getType().toString() + " §7in der " + VoteKey.getVoteKeyName(currentVoteKey.getType()) + " §7gefunden.");
+        Bukkit.broadcastMessage("§e" + Bukkit.getPlayer(occupier).getName() + " §7hat §6" + veryRareItem.getType().toString() + " §7durch " + currentVoteKey.getDisplayName() + " §7gefunden.");
         Bukkit.broadcastMessage("");
 
         spawnFireworks(block.getLocation(), 1);
@@ -158,7 +157,7 @@ public class VoteChest {
             if (block1.equals(block))
                 return true;
 
-            return false;
+        return false;
     }
 
     private BlockFace getBlockFaceByInt(int i) {
@@ -177,6 +176,8 @@ public class VoteChest {
 
     private void despawnChests() {
         for (Block block : chests) {
+            org.bukkit.block.Chest chest = (org.bukkit.block.Chest) block.getState();
+            chest.getBlockInventory().clear();
             block.setType(Material.AIR);
         }
         block.setType(Material.ENDER_CHEST);

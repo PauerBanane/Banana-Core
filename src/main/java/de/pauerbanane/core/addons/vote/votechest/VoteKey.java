@@ -1,10 +1,16 @@
 package de.pauerbanane.core.addons.vote.votechest;
 
 import com.google.common.collect.Lists;
+import de.pauerbanane.api.util.ItemBuilder;
 import de.pauerbanane.api.util.UtilMath;
+import de.pauerbanane.core.BananaCore;
+import de.pauerbanane.core.addons.vote.data.VoteData;
+import de.pauerbanane.core.data.CorePlayer;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,144 +18,182 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@SerializableAs("voteKey")
+@SerializableAs("votekey")
 public class VoteKey implements ConfigurationSerializable {
+
+    private String name;
+
+    private String displayName;
+
+    private Material icon;
+
+    private int modelData;
+
+    private int requiredVotes;
+
+    private ArrayList<VoteChestContent> chestContents;
 
     private static int commonItemsPerc = 90,
                        rareItemsPerc   = 99,
-                       veryRareItemsPerc = 100;
+                       epicItemsPerc = 100;
 
-    private VoteKey.Type type;
+    public VoteKey(String name, String displayName, Material icon, int modelData, ArrayList<VoteChestContent> chestContents, int requiredVotes) {
+        this.name = name;
+        this.displayName = displayName;
+        this.icon = icon;
+        this.modelData = modelData;
+        if (chestContents != null) {
+            this.chestContents = chestContents;
+        } else
+            this.chestContents = Lists.newArrayList(new VoteChestContent(null, VoteChestContent.Type.COMMON),
+                                                    new VoteChestContent(null, VoteChestContent.Type.RARE),
+                                                    new VoteChestContent(null, VoteChestContent.Type.EPIC));
 
-    private ArrayList<ItemStack> commonItems,
-                                 rareItems,
-                                 veryRareItems;
+        if (requiredVotes <= 0) {
+            this.requiredVotes = 10000;
+        } else
+            this.requiredVotes = requiredVotes;
+    }
 
-    public VoteKey(VoteKey.Type type, ArrayList<ItemStack> commonItems, ArrayList<ItemStack> rareItems, ArrayList<ItemStack> veryRareItems){
-        this.type = type;
-        this.commonItems = commonItems;
-        this.rareItems = rareItems;
-        this.veryRareItems = veryRareItems;
+    public ItemStack getDescriptionItem(Player player) {
+        VoteData voteData = CorePlayer.get(player.getUniqueId()).getData(VoteData.class);
+        int obtainedKeys = voteData.getVoteKeys(this);
+
+        ItemBuilder builder = new ItemBuilder(icon).name(displayName).setModelData(modelData);
+
+        builder.lore("");
+        builder.lore("§7Du besitzt §e" + obtainedKeys + " §7Schlüssel.");
+        builder.lore("");
+        if (player.hasPermission("command.votechest"))
+            builder.lore("§2Rechtsklick §7um den Inhalt zu bearbeiten.");
+
+        return builder.build();
     }
 
     public ItemStack[] createInventory() {
         ItemStack[] contents = new ItemStack[13];
         for(int i = 0; i < 13; i++) {
             int random = UtilMath.random(0, 99);
-            if(random < commonItemsPerc) {
-                contents[i] = commonItems.get(UtilMath.random(0, commonItems.size() - 1));
-            } else if (random < rareItemsPerc) {
-                contents[i] = rareItems.get(UtilMath.random(0, rareItems.size() - 1));
-            } else if (random < veryRareItemsPerc) {
-                contents[i] = veryRareItems.get(UtilMath.random(0, veryRareItems.size() - 1));
+            if(random < commonItemsPerc && hasContentType(VoteChestContent.Type.COMMON)) {
+                contents[i] = getChestContent(VoteChestContent.Type.COMMON).getRandomItem();
+            } else if (random < rareItemsPerc && hasContentType(VoteChestContent.Type.RARE)) {
+                contents[i] = getChestContent(VoteChestContent.Type.RARE).getRandomItem();
+            } else if (random < epicItemsPerc && hasContentType(VoteChestContent.Type.EPIC)) {
+                contents[i] = getChestContent(VoteChestContent.Type.EPIC).getRandomItem();
             }
         }
 
         return contents;
     }
 
-    public boolean containsRareItems(Inventory inventory) {
-        for (ItemStack item : inventory.getContents())
-            if (rareItems.contains(item))
-                return true;
+    public VoteChestContent getChestContent(VoteChestContent.Type type) {
+        for (VoteChestContent c : chestContents) {
+            if (c.getType() == type)
+                return c;
+        }
 
-        return false;
+        VoteChestContent c = new VoteChestContent(null, type);
+        addContent(c);
+        return c;
     }
 
-    public boolean containsVeryRareItems(Inventory inventory) {
+    public ItemStack getEpicItem(Inventory inventory) {
+        if (!hasContentType(VoteChestContent.Type.EPIC)) return null;
         for (ItemStack item : inventory.getContents())
-            if (veryRareItems.contains(item))
-                return true;
-
-        return false;
-    }
-
-    public ItemStack getVeryRareItem(Inventory inventory) {
-        for (ItemStack item : inventory.getContents())
-            if (veryRareItems.contains(item))
+            if (getChestContent(VoteChestContent.Type.EPIC).getContents().contains(item))
                 return item.clone();
 
         return null;
+    }
+
+    public boolean hasContentType(VoteChestContent.Type type) {
+        for (VoteChestContent chestContent : chestContents) {
+            if (chestContent.getType() == type)
+                return true;
+        }
+
+        return false;
+    }
+
+    public boolean addContent(VoteChestContent content) {
+        if (hasContentType(content.getType())) return false;
+        chestContents.add(content);
+        return true;
     }
 
     @Override
     public Map<String, Object> serialize() {
         LinkedHashMap<String, Object> result = new LinkedHashMap<>();
 
-        result.put("type", type.toString());
-        for (int i = 0; i < commonItems.size(); i++)
-            result.put("commonItems." + i, commonItems.get(i));
-        for (int i = 0; i < rareItems.size(); i++)
-            result.put("rareItems." + i, rareItems.get(i));
-        for (int i = 0; i < veryRareItems.size(); i++)
-            result.put("veryRareItems." + i, veryRareItems.get(i));
+        result.put("name", name);
+        result.put("displayName", displayName);
+        result.put("icon", icon.toString());
+        result.put("modelData", modelData);
+        result.put("requiredVotes", requiredVotes);
+
+        for (int i = 0; i < chestContents.size(); i++) {
+            result.put("chestContents." + i, chestContents.get(i));
+        }
 
         return result;
     }
 
     public static VoteKey deserialize(Map<String, Object> args) {
-        Type type = getTypeByString((String) args.get("type"));
-        ArrayList<ItemStack> commonItems    = Lists.newArrayList(),
-                             rareItems      = Lists.newArrayList(),
-                             veryRareItems  = Lists.newArrayList();
+        String name = (String) args.get("name");
+        String displayName = (String) args.get("displayName");
+        String materialName = (String) args.get("icon");
+        Material material = Material.valueOf(materialName);
+        if (material == null) {
+            material = Material.PAPER;
+            BananaCore.getInstance().getLogger().warning("Failed to load Material " + materialName + " - Resetting to PAPER");
+        }
+        int modelData = (int) args.get("modelData");
+        int requiredVotes = (int) args.getOrDefault("requiredVotes", 0);
 
-        args.keySet().stream().filter(arg -> arg.startsWith("commonItems")).forEach(arg -> commonItems.add((ItemStack) args.get(arg)));
-        args.keySet().stream().filter(arg -> arg.startsWith("rareItems")).forEach(arg -> rareItems.add((ItemStack) args.get(arg)));
-        args.keySet().stream().filter(arg -> arg.startsWith("veryRareItems")).forEach(arg -> veryRareItems.add((ItemStack) args.get(arg)));
+        ArrayList<VoteChestContent> contents = Lists.newArrayList();
+        args.keySet().stream().filter(arg -> arg.startsWith("chestContents")).forEach(arg -> contents.add((VoteChestContent) args.get(arg)));
 
-        if (commonItems.isEmpty())      commonItems.add(new ItemStack(Material.WHEAT));
-        if (rareItems.isEmpty())        rareItems.add(new ItemStack(Material.GOLD_INGOT));
-        if (veryRareItems.isEmpty())    veryRareItems.add(new ItemStack(Material.DIAMOND));
-
-        return new VoteKey(type, commonItems, rareItems, veryRareItems);
+        VoteKey voteKey = new VoteKey(name,displayName, material, modelData, contents, requiredVotes);
+        return voteKey;
     }
 
-    public enum Type {
-        OLD_KEY,
-        ANCIENT_KEY,
-        EPIC_KEY;
+    public Material getIcon() {
+        return icon;
     }
 
-    public enum Rarity {
-        COMMON,
-        RARE,
-        VERY_RARE;
+    public String getName() {
+        return name;
     }
 
-    public static VoteKey.Type getTypeByString(String s) {
-        if(s.equalsIgnoreCase("OLD_KEY")) return Type.OLD_KEY;
-        if(s.equalsIgnoreCase("ANICENT_KEY")) return Type.ANCIENT_KEY;
-        if (s.equalsIgnoreCase("EPIC_KEY")) return Type.EPIC_KEY;
-        return null;
+    public ArrayList<VoteChestContent> getChestContents() {
+        return chestContents;
     }
 
-    public static String getVoteKeyName(VoteKey.Type type) {
-        if (type == Type.OLD_KEY)       return "§7Alte Truhe";
-        if (type == Type.ANCIENT_KEY)   return "§6Antike Truhe";
-        if (type == Type.EPIC_KEY)      return "§5Epische Truhe";
-        return null;
+    public int getModelData() {
+        return modelData;
     }
 
-    public ArrayList<ItemStack> getCommonItems() {
-        return commonItems;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public ArrayList<ItemStack> getRareItems() {
-        return rareItems;
+    public void setModelData(int modelData) {
+        this.modelData = modelData;
     }
 
-    public ArrayList<ItemStack> getVeryRareItems() {
-        return veryRareItems;
+    public void setIcon(Material icon) {
+        this.icon = icon;
     }
 
-    public void setItems(ArrayList<ItemStack> items, Rarity rarity) {
-        if (items.isEmpty()) items.add(new ItemStack(Material.WHEAT_SEEDS));
-        if (rarity == Rarity.COMMON) this.commonItems = items;
-        if (rarity == Rarity.RARE) this.rareItems = items;
-        if (rarity == Rarity.VERY_RARE) this.veryRareItems = items;
+    public int getRequiredVotes() {
+        return requiredVotes;
     }
 
-    public Type getType() {
-        return type;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setRequiredVotes(int requiredVotes) {
+        this.requiredVotes = requiredVotes;
     }
 }

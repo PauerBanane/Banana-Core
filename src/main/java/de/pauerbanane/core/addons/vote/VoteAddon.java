@@ -1,33 +1,29 @@
 package de.pauerbanane.core.addons.vote;
 
 import de.pauerbanane.api.addons.Addon;
-import de.pauerbanane.api.util.UtilItem;
+import de.pauerbanane.core.BananaCore;
+import de.pauerbanane.core.addons.vote.data.VoteData;
 import de.pauerbanane.core.addons.vote.votechest.VoteChestManager;
-import org.bukkit.inventory.ItemStack;
+import de.pauerbanane.core.addons.votifier.Vote;
 
 public class VoteAddon extends Addon {
 
-    private VoteChestManager voteChestManager;
-
-    private VoteManager voteManager;
+    private VoteChestManager manager;
 
     @Override
     public void onEnable() {
-        this.voteChestManager = new VoteChestManager(this);
-        this.voteManager = new VoteManager(this);
+        this.manager = new VoteChestManager(this, commandManager);
+        new VoteReceiver(manager);
+        BananaCore.getInstance().getPlayerDataManager().registerPlayerData(plugin, VoteData.class);
     }
 
     @Override
     public void onDisable() {
-        voteChestManager.save();
+        manager.save();
     }
 
     @Override
     public void onReload() {
 
-    }
-
-    public VoteChestManager getVoteChestManager() {
-        return voteChestManager;
     }
 }

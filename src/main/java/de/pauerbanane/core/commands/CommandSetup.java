@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.pauerbanane.acf.BukkitCommandIssuer;
 import de.pauerbanane.acf.ConditionFailedException;
 import de.pauerbanane.acf.InvalidCommandArgument;
@@ -89,6 +90,15 @@ public class CommandSetup {
             } else
                 throw new InvalidCommandArgument("Invalid Material specified.");
 
+        });
+        commandManager.getCommandContexts().registerContext(ProtectedRegion.class, c -> {
+            final String tag = c.popFirstArg();
+            World world = c.getPlayer().getWorld();
+            ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world)).getRegions().get(tag);
+            if (region != null) {
+                return region;
+            } else
+                throw new InvalidCommandArgument("Diese Region existiert nicht in dieser Welt.");
         });
         commandManager.getCommandContexts().registerContext(Group.class, c -> {
             final String tag = c.popFirstArg();
