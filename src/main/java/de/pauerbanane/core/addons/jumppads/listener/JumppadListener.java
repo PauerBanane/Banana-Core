@@ -1,6 +1,7 @@
 package de.pauerbanane.core.addons.jumppads.listener;
 
 import de.pauerbanane.api.regionevents.RegionEnterEvent;
+import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.UtilPlayer;
 import de.pauerbanane.core.addons.jumppads.Jumppad;
 import de.pauerbanane.core.addons.jumppads.JumppadManager;
@@ -22,6 +23,10 @@ public class JumppadListener implements Listener {
         if (!manager.isJumppadRegion(e.getPlayer().getWorld(), e.getRegion())) return;
         if (e.getPlayer().isSneaking() && e.getPlayer().hasPermission("command.jumppad")) return;
         Jumppad jumppad = manager.getJumppad(e.getPlayer().getWorld(), e.getRegion().getId());
+        if (!jumppad.hasAchievedConditions(e.getPlayer())) {
+            e.getPlayer().sendMessage(F.error("Jumppad", "Du hast die Bedingungen nicht erfüllt."));
+            return;
+        }
 
         jumppad.useJumppad(e.getPlayer());
     }

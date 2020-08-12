@@ -1,5 +1,10 @@
 package de.pauerbanane.core;
 
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import de.pauerbanane.acf.BaseCommand;
 import de.pauerbanane.acf.PaperCommandManager;
 import de.pauerbanane.api.BananaAPI;
@@ -29,6 +34,7 @@ import de.pauerbanane.core.addons.resourcepack.Resourcepack;
 import de.pauerbanane.core.addons.schematicbrowser.SchematicBrowser;
 import de.pauerbanane.core.addons.settings.PlayerSettings;
 import de.pauerbanane.core.addons.settings.data.Settings;
+import de.pauerbanane.core.addons.skyblock.SkyblockAddon;
 import de.pauerbanane.core.addons.snowcontrol.SnowControl;
 import de.pauerbanane.core.addons.ultrahardcore.UltraHardcore;
 import de.pauerbanane.core.addons.vote.VoteAddon;
@@ -41,6 +47,7 @@ import de.pauerbanane.core.data.PermissionManager;
 import de.pauerbanane.core.data.PlayerDataLoader;
 import de.pauerbanane.core.listener.DisableJoinQuitMessage;
 import de.pauerbanane.core.sql.DatabaseManager;
+import jdk.nashorn.internal.ir.Block;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -85,7 +92,10 @@ public class BananaCore extends JavaPlugin {
 
     private String serverName;
 
-
+    @Override
+    public void onLoad() {
+        super.onLoad();
+    }
 
     @Override
     public void onEnable() {
@@ -194,6 +204,7 @@ public class BananaCore extends JavaPlugin {
         addonManager.registerAddon(new Resourcepack(), "Resourcepack");
         addonManager.registerAddon(new SchematicBrowser(), "SchematicBrowser");
         addonManager.registerAddon(new PlayerShop(), "Shops");
+        addonManager.registerAddon(new SkyblockAddon(), "Skyblock");
         addonManager.registerAddon(new SnowControl(), "SnowControl");
         addonManager.registerAddon(new DeathMessages(), "Todesnachrichten");
         addonManager.registerAddon(new UltraHardcore(), "Ultra-Hardcore");

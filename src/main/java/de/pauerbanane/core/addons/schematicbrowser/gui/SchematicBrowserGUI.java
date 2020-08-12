@@ -126,6 +126,7 @@ public class SchematicBrowserGUI implements InventoryProvider {
                 if(click.isLeftClick()) {
                     String debug = addon.getSchematicFolder().toURI().relativize(file.toURI()).getPath();
                     Bukkit.dispatchCommand((CommandSender) player, "/schem load " + debug);
+                    System.out.println("Debug:" + debug);
                     player.closeInventory();
                 } else if(click.getCursor() == null || click.getCursor().getType() == Material.AIR) {
                     click.getWhoClicked().setItemOnCursor(click.getCurrentItem());

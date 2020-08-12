@@ -27,9 +27,15 @@ public class VoteChestListener implements Listener {
 
     @EventHandler
     public void handleChestOpen(PlayerInteractEvent e) {
-        if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getClickedBlock().getType() != Material.CHEST) return;
-        if (manager.getOccupiedVoteChest(e.getPlayer()) == null) return;
+        if (!manager.isVotechestChest(e.getClickedBlock())) return;
+        if (manager.getOccupiedVoteChest(e.getPlayer()) == null) {
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(F.error("Votechest", "Diese Kiste gehört dir nicht."));
+            return;
+        }
+
         VoteChest voteChest = manager.getOccupiedVoteChest(e.getPlayer());
 
         if(!voteChest.isChest(e.getClickedBlock())) return;

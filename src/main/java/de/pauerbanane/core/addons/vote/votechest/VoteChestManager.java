@@ -212,6 +212,14 @@ public class VoteChestManager {
         return null;
     }
 
+    public boolean isVotechestChest(Block block) {
+        for (VoteChest voteChest : voteChests) {
+            if (voteChest.isChest(block))
+                return true;
+        }
+        return false;
+    }
+
     public static VoteChestManager getInstance() {
         return instance;
     }
