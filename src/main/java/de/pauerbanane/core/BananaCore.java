@@ -13,6 +13,7 @@ import de.pauerbanane.api.data.PlayerDataManager;
 import de.pauerbanane.api.scoreboards.ScoreboardAPI;
 import de.pauerbanane.core.addons.afk.AFK;
 import de.pauerbanane.core.addons.beds.Beds;
+import de.pauerbanane.core.addons.blockrefresh.BlockRefreshAddon;
 import de.pauerbanane.core.addons.carriages.Carriages;
 import de.pauerbanane.core.addons.chairs.Chairs;
 import de.pauerbanane.core.addons.chat.PluginMessageChat;
@@ -43,11 +44,11 @@ import de.pauerbanane.core.commands.AddonCommand;
 import de.pauerbanane.core.commands.CheckPermissionCommand;
 import de.pauerbanane.core.commands.CommandSetup;
 import de.pauerbanane.core.commands.CustomItemCommand;
+import de.pauerbanane.core.data.FlagManager;
 import de.pauerbanane.core.data.PermissionManager;
 import de.pauerbanane.core.data.PlayerDataLoader;
 import de.pauerbanane.core.listener.DisableJoinQuitMessage;
 import de.pauerbanane.core.sql.DatabaseManager;
-import jdk.nashorn.internal.ir.Block;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -84,6 +85,8 @@ public class BananaCore extends JavaPlugin {
 
     private AddonManager addonManager;
 
+    private FlagManager flagManager;
+
     private CommandSetup commandSetup;
 
     private DatabaseManager databaseManager;
@@ -95,6 +98,7 @@ public class BananaCore extends JavaPlugin {
     @Override
     public void onLoad() {
         super.onLoad();
+        this.flagManager = new FlagManager(this);
     }
 
     @Override
@@ -185,6 +189,7 @@ public class BananaCore extends JavaPlugin {
 
     private void registerAddons() {
         addonManager.registerAddon(new AFK(), "AFK");
+        addonManager.registerAddon(new BlockRefreshAddon(), "BlockRefresh");
         addonManager.registerAddon(new Carriages(), "Carriages");
         addonManager.registerAddon(new Chairs(), "Chairs");
         addonManager.registerAddon(new PluginMessageChat(), "Chat");
