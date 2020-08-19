@@ -11,19 +11,10 @@ import de.pauerbanane.api.util.F;
 import de.pauerbanane.core.addons.jumppads.Jumppad;
 import de.pauerbanane.core.addons.jumppads.JumppadManager;
 import de.pauerbanane.core.addons.jumppads.JumppadVector;
-import de.pauerbanane.core.addons.jumppads.conditions.AcidIslandLevelCondition;
-import de.pauerbanane.core.addons.jumppads.conditions.JumppadCondition;
+import de.pauerbanane.core.data.conditions.AcidIslandLevelCondition;
 import de.pauerbanane.core.addons.jumppads.gui.AdminRemoveJumppadConditionGUI;
-import de.pauerbanane.core.addons.ranks.Rank;
-import de.pauerbanane.core.addons.ranks.conditions.GroupCondition;
-import de.pauerbanane.core.addons.ranks.conditions.PlaytimeCondition;
-import de.pauerbanane.core.addons.ranks.conditions.RankCondition;
-import de.pauerbanane.core.addons.ranks.conditions.VoteCondition;
-import de.pauerbanane.core.addons.ranks.gui.admin.AdminRemoveRankConditionGUI;
-import de.pauerbanane.core.data.PermissionManager;
+import de.pauerbanane.core.data.conditions.Condition;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
-import org.mozilla.javascript.ast.Jump;
 
 @CommandAlias("jumppad")
 @CommandPermission("command.jumppad")
@@ -56,19 +47,14 @@ public class JumppadCommand extends BaseCommand {
     }
 
     @Subcommand("addcondition")
-    @CommandCompletion("@jumppad @jumppadcondition @nothing")
-    public void addCondition(Player sender, Jumppad jumppad, JumppadCondition.Type type, String value) {
-        if (!JumppadCondition.isValidValue(type,value)) {
+    @CommandCompletion("@jumppad @condition @nothing")
+    public void addCondition(Player sender, Jumppad jumppad, Condition.Type type, String value) {
+        if (!Condition.isValidValue(type,value)) {
             sender.sendMessage(F.error("Jumppad", "Dieser Wert ist nicht möglich für diese Voraussetzung."));
             return;
         }
 
-        if (type == JumppadCondition.Type.AcidIsland_Level_Condition) {
-            jumppad.addCondition(new AcidIslandLevelCondition(Integer.parseInt(value)));
-        } else {
-            sender.sendMessage(F.error("Jumppad", "Diese Voraussetzung wird noch nicht unterstützt."));
-            return;
-        }
+        jumppad.addCondition(new Condition.Builder().setType(type).setValue(value).build());
 
         sender.sendMessage(F.main("Jumppad", "Die Voraussetzung wurde dem Jumppad hinzugefügt."));
     }

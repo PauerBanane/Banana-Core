@@ -3,7 +3,6 @@ package de.pauerbanane.core.addons.vote.data;
 import com.google.common.collect.Maps;
 import de.pauerbanane.api.data.PlayerData;
 import de.pauerbanane.core.BananaCore;
-import de.pauerbanane.core.addons.vote.votechest.VoteChest;
 import de.pauerbanane.core.addons.vote.votechest.VoteChestManager;
 import de.pauerbanane.core.addons.vote.votechest.VoteKey;
 import org.bukkit.NamespacedKey;

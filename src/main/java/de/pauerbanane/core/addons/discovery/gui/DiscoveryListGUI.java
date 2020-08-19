@@ -1,40 +1,46 @@
-package de.pauerbanane.core.addons.jumppads.gui;
+package de.pauerbanane.core.addons.discovery.gui;
 
 import com.google.common.collect.Lists;
 import de.pauerbanane.api.smartInventory.ClickableItem;
 import de.pauerbanane.api.smartInventory.content.*;
 import de.pauerbanane.api.util.ItemBuilder;
-import de.pauerbanane.core.addons.jumppads.Jumppad;
-import de.pauerbanane.core.data.conditions.Condition;
+import de.pauerbanane.api.util.UtilItem;
+import de.pauerbanane.core.addons.discovery.Discovery;
+import de.pauerbanane.core.addons.discovery.DiscoveryAddon;
+import de.pauerbanane.core.addons.discovery.data.DiscoveryData;
+import de.pauerbanane.core.data.CorePlayer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
-public class AdminRemoveJumppadConditionGUI implements InventoryProvider {
+public class DiscoveryListGUI implements InventoryProvider {
 
-    private Jumppad jumppad;
+    private DiscoveryAddon addon;
 
-    public AdminRemoveJumppadConditionGUI(Jumppad jumppad) {
-        this.jumppad = jumppad;
+    public DiscoveryListGUI(DiscoveryAddon addon) {
+        this.addon = addon;
     }
 
     @Override
     public void init(Player player, InventoryContents contents) {
+        DiscoveryData data = CorePlayer.get(player.getUniqueId()).getData(DiscoveryData.class);
         Pagination pagination = contents.pagination();
         ArrayList<ClickableItem> items = Lists.newArrayList();
         contents.fillBorders(ClickableItem.empty(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(" ").build()));
 
 
-        for (Condition condition : jumppad.getConditions()) {
-            items.add(ClickableItem.of(new ItemBuilder(Material.OAK_SIGN).name("§7Voraussetzung:").lore(condition.requirementsAsLore(player)).lore("§4Rechtsklick zum Entfernen").build(), c -> {
-                if (c.isRightClick()) {
-                    player.closeInventory();
-                    jumppad.removeCondition(condition);
-                    reOpen(player, contents);
-                }
-            }));
+        for (Discovery discovery : addon.getDiscoveries().values()) {
+            items.add(ClickableItem.empty(discovery.getDisplayItem(player)));
         }
+
+        ItemStack stats = new ItemBuilder(UtilItem.getPlayerHead(player.getUniqueId()))
+                                         .name("§eStatistik")
+                                         .lore("§7Gefunden§8: §e" + data.getTotalUnlockedDiscoveries() + "§8/§a" + addon.getDiscoveries().values().size())
+                                         .build();
+
+        contents.set(SlotPos.of(2, 4), ClickableItem.empty(stats));
 
 
         ClickableItem[] c = new ClickableItem[items.size()];
@@ -54,4 +60,5 @@ public class AdminRemoveJumppadConditionGUI implements InventoryProvider {
         slotIterator = slotIterator.allowOverride(true);
         pagination.addToIterator(slotIterator);
     }
+
 }

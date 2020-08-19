@@ -6,11 +6,8 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.pauerbanane.api.util.UtilLoc;
 import de.pauerbanane.api.util.UtilPlayer;
-import de.pauerbanane.api.util.WorldEditUtil;
 import de.pauerbanane.core.BananaCore;
-import de.pauerbanane.core.addons.jumppads.conditions.AcidIslandLevelCondition;
-import de.pauerbanane.core.addons.jumppads.conditions.JumppadCondition;
-import de.pauerbanane.core.addons.ranks.conditions.RankCondition;
+import de.pauerbanane.core.data.conditions.Condition;
 import org.bukkit.*;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
@@ -30,7 +27,7 @@ public class Jumppad implements ConfigurationSerializable {
 
     private Double defaultPower;
 
-    private ArrayList<JumppadCondition> conditions;
+    private ArrayList<Condition> conditions;
 
     private JumppadVector mainVector;
 
@@ -38,7 +35,7 @@ public class Jumppad implements ConfigurationSerializable {
 
     private Location targetLocation;
 
-    public Jumppad(World world, ProtectedRegion region, double defaultPower, ArrayList<JumppadCondition> conditions, JumppadVector mainVector) {
+    public Jumppad(World world, ProtectedRegion region, double defaultPower, ArrayList<Condition> conditions, JumppadVector mainVector) {
         this.world = world;
         this.region = region;
         this.defaultPower = defaultPower;
@@ -50,7 +47,7 @@ public class Jumppad implements ConfigurationSerializable {
     }
 
     public boolean hasAchievedConditions(Player player) {
-        for (JumppadCondition condition : conditions) {
+        for (Condition condition : conditions) {
             if (!condition.conditionAchieved(player))
                 return false;
         }
@@ -80,11 +77,11 @@ public class Jumppad implements ConfigurationSerializable {
         }
     }
 
-    public void addCondition(JumppadCondition condition) {
+    public void addCondition(Condition condition) {
         conditions.add(condition);
     }
 
-    public void removeCondition(JumppadCondition condition) {
+    public void removeCondition(Condition condition) {
         conditions.remove(condition);
     }
 
@@ -129,8 +126,8 @@ public class Jumppad implements ConfigurationSerializable {
         if (args.containsKey("mainVector"))
             mainVector = (JumppadVector) args.get("mainVector");
 
-        ArrayList<JumppadCondition> jumppadConditions = Lists.newArrayList();
-        args.keySet().stream().filter(arg -> arg.startsWith("conditions")).forEach(arg -> jumppadConditions.add((JumppadCondition) args.get(arg)));
+        ArrayList<Condition> jumppadConditions = Lists.newArrayList();
+        args.keySet().stream().filter(arg -> arg.startsWith("conditions")).forEach(arg -> jumppadConditions.add((Condition) args.get(arg)));
 
         Jumppad jumppad = new Jumppad(world, region, defaultPower, jumppadConditions, mainVector);
 
@@ -152,7 +149,7 @@ public class Jumppad implements ConfigurationSerializable {
         return region;
     }
 
-    public ArrayList<JumppadCondition> getConditions() {
+    public ArrayList<Condition> getConditions() {
         return conditions;
     }
 

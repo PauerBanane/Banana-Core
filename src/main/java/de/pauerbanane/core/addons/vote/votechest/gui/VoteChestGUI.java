@@ -6,6 +6,7 @@ import de.pauerbanane.api.smartInventory.content.InventoryContents;
 import de.pauerbanane.api.smartInventory.content.InventoryProvider;
 import de.pauerbanane.api.smartInventory.content.SlotPos;
 import de.pauerbanane.api.util.ItemBuilder;
+import de.pauerbanane.api.util.UtilItem;
 import de.pauerbanane.api.util.UtilPlayer;
 import de.pauerbanane.core.addons.lobby.server.Server;
 import de.pauerbanane.core.addons.vote.data.VoteData;
@@ -14,9 +15,11 @@ import de.pauerbanane.core.addons.vote.votechest.VoteChestManager;
 import de.pauerbanane.core.addons.vote.votechest.VoteKey;
 import de.pauerbanane.core.addons.vote.votechest.gui.admin.AdminContentSelectionGUI;
 import de.pauerbanane.core.data.CorePlayer;
+import de.pauerbanane.core.sql.DatabaseManager;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class VoteChestGUI implements InventoryProvider {
 
@@ -34,6 +37,10 @@ public class VoteChestGUI implements InventoryProvider {
         VoteData voteData = CorePlayer.get(player.getUniqueId()).getData(VoteData.class);
 
         contents.fillBorders(ClickableItem.empty(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(" ").build()));
+
+        ItemStack stats = new ItemBuilder(UtilItem.getPlayerHead(player.getUniqueId()))
+                                         .name("§7Votes: §a" + DatabaseManager.getInstance().getVotes(player.getUniqueId())).build();
+        contents.set(SlotPos.of(0, 4), ClickableItem.empty(stats));
 
         int i = 0;
         int pos = 2;

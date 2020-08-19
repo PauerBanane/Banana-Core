@@ -1,4 +1,4 @@
-package de.pauerbanane.core.addons.ranks.conditions;
+package de.pauerbanane.core.data.conditions;
 
 import com.google.common.collect.Lists;
 import de.pauerbanane.core.data.PermissionManager;
@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 @SerializableAs("groupCondition")
-public class GroupCondition extends RankCondition {
+public class GroupCondition extends Condition {
 
     private Group requiredGroup;
 
     public GroupCondition(Group requiredGroup) {
-        super.type = TYPE.GROUP_CONDITION;
+        super.type = Type.GROUP_CONDITION;
         this.requiredGroup = requiredGroup;
     }
 

@@ -3,8 +3,8 @@ package de.pauerbanane.core.addons.ranks;
 import com.google.common.collect.Lists;
 import de.pauerbanane.api.util.ItemBuilder;
 import de.pauerbanane.core.BananaCore;
-import de.pauerbanane.core.addons.ranks.conditions.RankCondition;
 import de.pauerbanane.core.data.PermissionManager;
+import de.pauerbanane.core.data.conditions.Condition;
 import net.luckperms.api.model.group.Group;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -22,11 +22,11 @@ public class Rank implements ConfigurationSerializable {
 
     private Group group;
 
-    private ArrayList<RankCondition> conditions;
+    private ArrayList<Condition> conditions;
 
     private Material icon;
 
-    public Rank( Group group, Material icon, ArrayList<RankCondition> conditions) {
+    public Rank( Group group, Material icon, ArrayList<Condition> conditions) {
         this.group = group;
         this.icon = icon;
         if (conditions != null) {
@@ -35,11 +35,11 @@ public class Rank implements ConfigurationSerializable {
             this.conditions = Lists.newArrayList();
     }
 
-    public void addCondition(RankCondition condition) {
+    public void addCondition(Condition condition) {
         conditions.add(condition);
     }
 
-    public void removeCondition(RankCondition condition) {
+    public void removeCondition(Condition condition) {
         conditions.remove(condition);
     }
 
@@ -73,7 +73,7 @@ public class Rank implements ConfigurationSerializable {
     }
 
     public boolean hasAchievedConditions(Player player) {
-        for (RankCondition condition : conditions) {
+        for (Condition condition : conditions) {
             if (!condition.conditionAchieved(player))
                 return false;
         }
@@ -100,8 +100,8 @@ public class Rank implements ConfigurationSerializable {
         Group group = PermissionManager.getApi().getGroupManager().getGroup((String) args.get("group"));
         Rank requiredRank = null;
         Material icon = Material.valueOf((String) args.get("icon"));
-        ArrayList<RankCondition> rankConditions = Lists.newArrayList();
-        args.keySet().stream().filter(arg -> arg.startsWith("conditions")).forEach(arg -> rankConditions.add((RankCondition) args.get(arg)));
+        ArrayList<Condition> rankConditions = Lists.newArrayList();
+        args.keySet().stream().filter(arg -> arg.startsWith("conditions")).forEach(arg -> rankConditions.add((Condition) args.get(arg)));
 
         if (group == null) {
             BananaCore.getInstance().getLogger().warning("Failed to load Group " + group.getName() + ": Invalid LuckPerms Group");
@@ -113,7 +113,7 @@ public class Rank implements ConfigurationSerializable {
         return rank;
     }
 
-    public ArrayList<RankCondition> getConditions() {
+    public ArrayList<Condition> getConditions() {
         return conditions;
     }
 

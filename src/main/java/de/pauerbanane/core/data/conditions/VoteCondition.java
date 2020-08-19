@@ -1,8 +1,6 @@
-package de.pauerbanane.core.addons.ranks.conditions;
+package de.pauerbanane.core.data.conditions;
 
 import com.google.common.collect.Lists;
-import com.sk89q.worldedit.math.MathUtils;
-import de.pauerbanane.api.util.UtilMath;
 import de.pauerbanane.core.sql.DatabaseManager;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
@@ -11,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 @SerializableAs("voteCondition")
-public class VoteCondition extends RankCondition {
+public class VoteCondition extends Condition {
 
     private int requiredVotes;
 
     public VoteCondition(int requiredVotes) {
-        super.type = TYPE.VOTE_CONDITION;
+        super.type = Type.VOTE_CONDITION;
         this.requiredVotes = requiredVotes;
     }
 

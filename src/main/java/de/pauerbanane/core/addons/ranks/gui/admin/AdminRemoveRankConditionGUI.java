@@ -6,7 +6,7 @@ import de.pauerbanane.api.smartInventory.content.*;
 import de.pauerbanane.api.util.F;
 import de.pauerbanane.api.util.ItemBuilder;
 import de.pauerbanane.core.addons.ranks.Rank;
-import de.pauerbanane.core.addons.ranks.conditions.RankCondition;
+import de.pauerbanane.core.data.conditions.Condition;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -27,7 +27,7 @@ public class AdminRemoveRankConditionGUI implements InventoryProvider {
         contents.fillBorders(ClickableItem.empty(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(" ").build()));
 
 
-        for (RankCondition condition : rank.getConditions()) {
+        for (Condition condition : rank.getConditions()) {
             items.add(ClickableItem.of(new ItemBuilder(Material.OAK_SIGN).name("§7Voraussetzung:").lore(condition.requirementsAsLore(player)).lore("§4Rechtsklick zum Entfernen").build(), c -> {
                 if (c.isRightClick()) {
                     player.closeInventory();

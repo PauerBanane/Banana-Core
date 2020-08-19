@@ -26,12 +26,30 @@ public class UtilWorldGuard {
 
     public static ProtectedRegion getRegion(Block block) {
         BlockVector3 bv3 = getBlockVector3FromLocation(block.getLocation());
-       for (ProtectedRegion region : getRegionManager(block.getWorld()).getRegions().values()) {
+        for (ProtectedRegion region : getRegionManager(block.getWorld()).getRegions().values()) {
            if (region.contains(bv3))
                return region;
-       }
+        }
 
        return null;
+    }
+
+    public static ProtectedRegion getRegion(String regionID, World world) {
+        for (ProtectedRegion region : getRegionManager(world).getRegions().values()) {
+            if (region.getId().equals(regionID))
+                return region;
+        }
+
+        return null;
+    }
+
+    public static boolean isRegion(String regionID, World world) {
+        for (ProtectedRegion region : getRegionManager(world).getRegions().values()) {
+            if (region.getId().equals(regionID))
+                return true;
+        }
+
+        return false;
     }
 
 }

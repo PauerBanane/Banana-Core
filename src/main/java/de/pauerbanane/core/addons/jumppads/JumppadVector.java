@@ -1,20 +1,9 @@
 package de.pauerbanane.core.addons.jumppads;
 
-import com.google.common.collect.Lists;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.pauerbanane.api.util.UtilLoc;
-import de.pauerbanane.core.BananaCore;
-import de.pauerbanane.core.addons.jumppads.conditions.JumppadCondition;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

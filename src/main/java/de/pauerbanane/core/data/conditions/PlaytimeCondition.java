@@ -1,7 +1,6 @@
-package de.pauerbanane.core.addons.ranks.conditions;
+package de.pauerbanane.core.data.conditions;
 
 import com.google.common.collect.Lists;
-import de.pauerbanane.api.util.UtilMath;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
@@ -11,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 @SerializableAs("playtimeCondition")
-public class PlaytimeCondition extends RankCondition {
+public class PlaytimeCondition extends Condition {
 
     private int requiredHours;
 
     public PlaytimeCondition(int requiredHours) {
-        super.type = TYPE.PLAYTIME_CONDITION;
+        super.type = Type.PLAYTIME_CONDITION;
         this.requiredHours = requiredHours;
     }
 

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Quests-3.9.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../Externe Plugins/Quests-3.9.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

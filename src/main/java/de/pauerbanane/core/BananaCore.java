@@ -19,6 +19,7 @@ import de.pauerbanane.core.addons.chairs.Chairs;
 import de.pauerbanane.core.addons.chat.PluginMessageChat;
 import de.pauerbanane.core.addons.chestlock.ChestLock;
 import de.pauerbanane.core.addons.deathMessages.DeathMessages;
+import de.pauerbanane.core.addons.discovery.DiscoveryAddon;
 import de.pauerbanane.core.addons.essentials.Essentials;
 import de.pauerbanane.core.addons.essentials.playerdata.HomeData;
 import de.pauerbanane.core.addons.infos.Infos;
@@ -47,6 +48,7 @@ import de.pauerbanane.core.commands.CustomItemCommand;
 import de.pauerbanane.core.data.FlagManager;
 import de.pauerbanane.core.data.PermissionManager;
 import de.pauerbanane.core.data.PlayerDataLoader;
+import de.pauerbanane.core.data.conditions.ConditionManager;
 import de.pauerbanane.core.listener.DisableJoinQuitMessage;
 import de.pauerbanane.core.sql.DatabaseManager;
 import net.milkbowl.vault.economy.Economy;
@@ -93,6 +95,8 @@ public class BananaCore extends JavaPlugin {
 
     private PlayerDataLoader playerDataLoader;
 
+    private ConditionManager conditionManager;
+
     private String serverName;
 
     @Override
@@ -119,6 +123,7 @@ public class BananaCore extends JavaPlugin {
         this.addonManager = new AddonManager(this, commandManager);
         this.commandSetup = new CommandSetup(this);
         this.playerDataLoader = new PlayerDataLoader(this);
+        this.conditionManager = new ConditionManager(this);
 
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
@@ -194,6 +199,7 @@ public class BananaCore extends JavaPlugin {
         addonManager.registerAddon(new Chairs(), "Chairs");
         addonManager.registerAddon(new PluginMessageChat(), "Chat");
         addonManager.registerAddon(new ChestLock(), "ChestLock");
+        addonManager.registerAddon(new DiscoveryAddon(), "Discovery");
         addonManager.registerAddon(new PlayerSettings(), "Einstellungen");
         addonManager.registerAddon(new Essentials(), "Essentials");
         addonManager.registerAddon(new Beds(), "ImprovedBeds");
