@@ -20,8 +20,7 @@ public class SkyblockListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        BananaCore.getScoreboardAPI().getBoardManager().enableScoreboard(e.getPlayer());
-        BananaCore.getScoreboardAPI().getBoardManager().setBoard(e.getPlayer(), new SkyblockBoard());
+        BananaCore.getScoreboardAPI().getBoardManager().forceBoard(e.getPlayer(), new SkyblockBoard());
     }
 
 }

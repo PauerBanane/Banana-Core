@@ -5,8 +5,11 @@ import de.pauerbanane.api.BananaAPI;
 import de.pauerbanane.api.scoreboards.api.Entry;
 import de.pauerbanane.api.scoreboards.api.EntryBuilder;
 import de.pauerbanane.api.scoreboards.api.ScoreboardHandler;
+import de.pauerbanane.api.util.DateTickFormat;
 import de.pauerbanane.api.util.F;
+import de.pauerbanane.api.util.UtilTime;
 import de.pauerbanane.core.BananaCore;
+import de.pauerbanane.core.data.RegionManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
@@ -34,9 +37,23 @@ public class SkyblockBoard implements ScoreboardHandler {
         List<String> quest = Lists.newArrayList(PlaceholderAPI.setPlaceholders(player, "%quests_player_current_quest_names%").split("\n"));
         List<String> objective = Lists.newArrayList(PlaceholderAPI.setPlaceholders(player, "%quests_player_current_objectives_" + quest.get(0) + "%").split("\n"));
 
+        String islandOwner = PlaceholderAPI.setPlaceholders(player, "%acidisland_visited_island_owner%");
+
+        String icon = UtilTime.isMinecraftDay(player.getWorld().getTime()) ? "§e☀" : "§9☁";
+
+        String timeformat = UtilTime.smoothDatetickFormat(player.getWorld().getTime());
+
+        if (islandOwner.equals(player.getName()))
+            islandOwner = "Deine Insel";
+
+        String locationName = islandOwner.length() > 0 ? islandOwner : RegionManager.getInstance().getCurrentRegionName(player);
+
         EntryBuilder builder = new EntryBuilder()
                 .blank()
-                .next("§7" + date.format(now) + " §8" + time.format(now) + " Uhr")
+                .next("§8" + date.format(now))
+                .next("§7" + timeformat + " Uhr " + icon)
+                .blank()
+                .next("§7♢ §6" + locationName)
                 .blank()
                 .next("§7Geld: §e" + BananaCore.getEconomy().getBalance(player) + " " + BananaCore.getEconomy().currencyNamePlural())
                 .blank();

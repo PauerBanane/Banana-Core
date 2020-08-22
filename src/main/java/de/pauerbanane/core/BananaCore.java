@@ -48,6 +48,7 @@ import de.pauerbanane.core.commands.CustomItemCommand;
 import de.pauerbanane.core.data.FlagManager;
 import de.pauerbanane.core.data.PermissionManager;
 import de.pauerbanane.core.data.PlayerDataLoader;
+import de.pauerbanane.core.data.RegionManager;
 import de.pauerbanane.core.data.conditions.ConditionManager;
 import de.pauerbanane.core.listener.DisableJoinQuitMessage;
 import de.pauerbanane.core.sql.DatabaseManager;
@@ -95,6 +96,8 @@ public class BananaCore extends JavaPlugin {
 
     private PlayerDataLoader playerDataLoader;
 
+    private RegionManager regionManager;
+
     private ConditionManager conditionManager;
 
     private String serverName;
@@ -120,6 +123,7 @@ public class BananaCore extends JavaPlugin {
         this.playerDataManager = PlayerDataManager.getInstance();
         this.permissionManager = new PermissionManager(this);
         this.pluginManager = Bukkit.getPluginManager();
+        this.regionManager = new RegionManager(this);
         this.addonManager = new AddonManager(this, commandManager);
         this.commandSetup = new CommandSetup(this);
         this.playerDataLoader = new PlayerDataLoader(this);

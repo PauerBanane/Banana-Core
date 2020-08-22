@@ -4,6 +4,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import de.pauerbanane.acf.InvalidCommandArgument;
 import de.pauerbanane.core.BananaCore;
+import de.pauerbanane.core.data.conditions.mcmmo.FishingCondition;
+import de.pauerbanane.core.data.conditions.mcmmo.HerbalismCondition;
+import de.pauerbanane.core.data.conditions.mcmmo.MiningCondition;
+import de.pauerbanane.core.data.conditions.mcmmo.WoodcuttingCondition;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import java.util.List;
@@ -19,6 +23,11 @@ public class ConditionManager {
         ConfigurationSerialization.registerClass(VoteCondition.class, "voteCondition");
         ConfigurationSerialization.registerClass(PlaytimeCondition.class, "playtimeCondition");
         ConfigurationSerialization.registerClass(AcidIslandLevelCondition.class, "acidislandlevelcondition");
+        
+        ConfigurationSerialization.registerClass(MiningCondition.class, "miningCondition");
+        ConfigurationSerialization.registerClass(WoodcuttingCondition.class, "woodcuttingCondition");
+        ConfigurationSerialization.registerClass(HerbalismCondition.class, "herbalismCondition");
+        ConfigurationSerialization.registerClass(FishingCondition.class, "fishingCondition");
 
         commandSetup();
     }
